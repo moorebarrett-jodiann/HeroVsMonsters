@@ -10,38 +10,38 @@ namespace OOP_FinalProject
     {
         private int _inventoryId;
         private Hero _hero;
-        private Weapon _weapon;
-        private Armor _armor;
+        private Weapon? _weapon;
+        private Armor? _armor;
 
         public int InventoryId
         {
             get { return _inventoryId; }
         }
 
-        public Hero Hero
-        {
-            get { return _hero; }
-            set { _hero = value; }
-        }
-
-        public Weapon Weapon
+        public Weapon? Weapon
         {
             get { return _weapon; }
             set { _weapon = value; }
         }
 
-        public Armor Armor
+        public Armor? Armor
         {
             get { return _armor; }
             set { _armor = value; }
         }
+        
+        public Hero? Hero
+        {
+            get { return _hero; }
+            set { _hero = value; }
+        }
 
-        public Inventory(int id, Hero hero, Weapon weapon, Armor armor)
+        public Inventory(int id, Hero hero)
         {
             _inventoryId = id;
+            Armor = null;
+            Weapon = null;
             Hero = hero;
-            Weapon = weapon;
-            Armor = armor;
-        }
+        }        
     }
 }

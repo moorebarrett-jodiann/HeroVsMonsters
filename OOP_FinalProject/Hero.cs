@@ -61,13 +61,13 @@ namespace OOP_FinalProject
             get { return _currentHealth; }
             set
             {
-                if(value > 0 && value < OriginalHealth)
+                if(value > 0 && value <= OriginalHealth)
                 {
                     _currentHealth = value;
                 } 
                 else
                 {
-                    throw new ArgumentException("Current health must be greater than 0 and less than Original Health");
+                    throw new ArgumentException("Current health must be greater than 0 and less than or equal to Original Health");
                 }
             }
         }

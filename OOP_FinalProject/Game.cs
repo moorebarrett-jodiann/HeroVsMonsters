@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,8 +11,8 @@ namespace OOP_FinalProject
     {
         public static HashSet<Hero> Heroes = new HashSet<Hero>();
         public static HashSet<Monster> Monsters = new HashSet<Monster>();
-        public static HashSet<Weapon> Weapons = new HashSet<Weapon>();
-        public static HashSet<Armor> ArmorList = new HashSet<Armor>();
+        public static List<Weapon> Weapons = new List<Weapon>();
+        public static List<Armor> ArmorList = new List<Armor>();
         public static HashSet<Inventory> HeroInventory = new HashSet<Inventory>();
         public static HashSet<Fight> Fights = new HashSet<Fight>();
 
@@ -22,11 +23,13 @@ namespace OOP_FinalProject
         private static int _inventoryIdCounter = 1;
         private static int _fightIdCounter = 1;
 
-        public static void CreateHero(string name)
+        public static int CreateHero(string name)
         {
-            Hero hero = new Hero(_heroIdCounter, name);
-            Heroes.Add(hero);
+            Hero newHero = new Hero(_heroIdCounter, name);
+            Heroes.Add(newHero);
             _heroIdCounter++;
+
+            return newHero.HeroId;
         }
 
         public static Hero? GetHero(int id)
@@ -119,11 +122,12 @@ namespace OOP_FinalProject
             return fight;
         }
 
-        public static void CreateMonsters()
+        public static void CreateMonsters(int count)
         {
             Random rand = new Random();
-            // create 5 monster objects and store to list
-            for (int i = 0; i < 5; i++)
+
+            // create 'count' monster objects and store to list
+            for (int i = 0; i < count; i++)
             {
                 //returns random number between 1-20
                 int defense = rand.Next(1, 21);
@@ -134,14 +138,213 @@ namespace OOP_FinalProject
                 _monsterIdCounter++;
             }
         }
+        
+        public static void CreateWeapons(int count)
+        {
+            Random rand = new Random();
+            // create a random index list to ensure only unique power values for weapons are created
+            List<int> randomIndexList = new List<int>();
+            // create 'count' weapon objects and store to list
+            while(Weapons.Count < count)
+            {
+                //returns random number between 1-20
+                int power = rand.Next(1, 21);                
+
+                // if power value was already generated dont create a weapon with that power
+                if (!randomIndexList.Contains(power))
+                {
+                    // add random value to index list
+                    randomIndexList.Add(power);
+
+                    Weapon randomWeapon = new Weapon(_weaponIdCounter, $"Weapon{Weapons.Count + 1}", power);                
+                    Weapons.Add(randomWeapon);
+                    _weaponIdCounter++;
+                }
+            }
+        }
+        
+        public static void CreateArmor(int count)
+        {
+            Random rand = new Random();
+            // create a random index list to ensure only unique power values for armor are created
+            List<int> randomIndexList = new List<int>();
+            // create 'count' armor objects and store to list
+            while(ArmorList.Count < count)
+            {
+                //returns random number between 1-10
+                int power = rand.Next(1, 11);                
+
+                // if power value was already generated dont create armor with that power
+                if (!randomIndexList.Contains(power))
+                {
+                    // add random value to index list
+                    randomIndexList.Add(power);
+
+                    Armor randomArmor = new Armor(_armorIdCounter, $"Armor{ArmorList.Count + 1}", power);
+                    ArmorList.Add(randomArmor);
+                    _armorIdCounter++;
+                }
+            }
+        }
+        public static void InitInventory(Hero hero)
+        {
+            if(hero != null)
+            {
+                Inventory inventory = new Inventory(_inventoryIdCounter, hero);
+                HeroInventory.Add(inventory);
+                hero.Inventory = inventory;
+                _inventoryIdCounter++;
+            }
+        }
+        
+        public static void UpdateWeapon(Hero hero)
+        {
+            Console.WriteLine("Select a Weapon number from the list:");
+            Console.WriteLine();
+            int index = 0;
+
+            foreach (Weapon weapon in Weapons)
+            {
+                Console.WriteLine($"{index + 1} - {weapon.WeaponName}: Power ({weapon.Power})");
+                index++;
+            }
+
+            int selected = Int32.Parse(Console.ReadLine());
+
+            if(selected < 1)
+            {
+                Console.WriteLine("Selection is invalid. Select a Weapon number from the list:");
+                selected = Int32.Parse(Console.ReadLine());
+            }
+
+            hero.EquipWeapon(Weapons[selected - 1]);
+            Console.WriteLine($"Weapon successfully updated");
+        }
+        
+        public static void UpdateArmor(Hero hero)
+        {
+            Console.WriteLine("Select an Armor number from the list:");
+            Console.WriteLine();
+            int index = 0;
+
+            foreach (Armor armor in ArmorList)
+            {
+                Console.WriteLine($"{index + 1} - {armor.ArmorName}: Power ({armor.Power})");
+                index++;
+            }
+
+            int selected = Int32.Parse(Console.ReadLine());
+
+            if(selected < 1)
+            {
+                Console.WriteLine("Selection is invalid. Select an Armor number from the list:");
+                selected = Int32.Parse(Console.ReadLine());
+            }
+
+            hero.EquipArmor(ArmorList[selected - 1]);
+            Console.WriteLine($"Armor successfully updated");
+        }
 
         public static void Start()
         {
             Menu1();
-            string userInput = GetUserInput();
-            CreateHero(userInput);
 
+            string heroName = GetUserInput();
+            int newHero = CreateHero(heroName);
 
+            // initialize a list of monsters
+            CreateMonsters(5);
+            CreateWeapons(5);
+            CreateArmor(5);
+            InitInventory(GetHero(newHero));
+
+            bool looping = true;
+            while (looping)
+            {
+                Menu2();
+                string selection = GetUserInput();
+
+                switch (selection)
+                {
+                    case "1":
+                        break;
+                    case "2":
+                        try
+                        {
+                            Hero? hero = GetHero(newHero);
+
+                            if (hero != null)
+                            {
+                                Weapon? weapon = hero.Inventory.Weapon;
+                                Armor? armor = hero.Inventory.Armor;
+
+                                if (armor == null)
+                                {
+                                    Console.WriteLine("You have no Armor.");
+                                }
+                                else
+                                {
+                                    string currArmor = (armor != null) ? $"Current armor: {armor.ArmorName} with Power: {armor.Power}" : "[not selected]";
+                                    Console.WriteLine(currArmor);                                    
+                                }
+
+                                if (weapon == null)
+                                {
+                                    Console.WriteLine("You have no Weapons.");
+                                }
+                                else
+                                {
+                                    string currWeapon = (weapon != null) ? $"Current weapon: {weapon.WeaponName} with Power: {weapon.Power}" : "[not selected]";
+                                    Console.WriteLine(currWeapon);
+                                }
+
+                                Console.WriteLine();
+                                Console.WriteLine("Press (1) to Update Weapon, (2) to Update Armor, (3) Go Back to Main Menu");
+                                int equipOption = Int32.Parse(Console.ReadLine());
+
+                                if (equipOption == 1)
+                                {
+                                    UpdateWeapon(hero);
+                                }
+                                else if (equipOption == 2)
+                                {
+                                    UpdateArmor(hero);
+                                }
+                                else if (equipOption == 3)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid Option Selected. Press (1) to Update Weapon or (2) to Update Armor");
+                                    equipOption = Int32.Parse(Console.ReadLine());
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Hero Player not Found");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        
+                        break;
+                    case "3":
+                        break;
+                    case "4":
+                        Console.WriteLine("\nThanks for playing!");
+                        looping = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid input. Please try again.");
+                        break;
+                }
+            }
+            //            CreateMonsters();
+            //Console.WriteLine(Monsters.Count);
         }
 
         static string GetUserInput(string promptMsg = "")
@@ -161,11 +364,10 @@ namespace OOP_FinalProject
         {
             Console.WriteLine();
             Console.WriteLine("Choose an option:");
-            Console.WriteLine("1. Add a song to your playlist");
-            Console.WriteLine("2. Play the next song in your playlist");
-            Console.WriteLine("3. Skip the next song");
-            Console.WriteLine("4. Rewind one song");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("1. Display Statistics");
+            Console.WriteLine("2. Manage Inventory");
+            Console.WriteLine("3. Fight");
+            Console.WriteLine("4. Exit");
         }
     }
 }

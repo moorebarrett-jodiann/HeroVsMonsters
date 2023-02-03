@@ -37,8 +37,15 @@ namespace OOP_FinalProject
         public void HeroTurn(int damage, Hero hero, Monster monster)
         {
             int monsterDamage = damage;
-
-            MonsterTurn(monsterDamage, hero, monster);
+            // calculate damage
+            // update monster current health
+            if(monster.CurrentHealth > 0)
+            {
+                MonsterTurn(monsterDamage, hero, monster);
+            } else
+            {
+                Win(monsterDamage, hero, monster);
+            }
         }
 
         /***
@@ -48,14 +55,20 @@ namespace OOP_FinalProject
         public void MonsterTurn(int damage, Hero hero, Monster monster)
         {
             int heroDamage = damage;
-
-            
-            HeroTurn(heroDamage, hero, monster);
+            // calculate damage
+            // update hero current health
+            if (hero.CurrentHealth > 0)
+            {
+                HeroTurn(heroDamage, hero, monster);
+            } else
+            {
+                Lose(heroDamage, hero, monster);
+            }
         }
 
         public void Win(int damage, Hero hero, Monster monster)
         {
-
+            // set monster isdefeated to true
         }
         
         public void Lose(int damage, Hero hero, Monster monster)
