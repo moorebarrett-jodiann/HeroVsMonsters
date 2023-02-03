@@ -13,8 +13,6 @@ namespace OOP_FinalProject
         private Hero _hero;
         private Monster _monster;
 
-        private List<Monster> _monsters = new List<Monster>();
-
         public int FightId
         {
             get { return _fightId; }
@@ -62,29 +60,6 @@ namespace OOP_FinalProject
         
         public void Lose(int damage, Hero hero, Monster monster)
         {
-
-        }
-
-        public void BeginFight(Hero hero)
-        {    
-            Random rand = new Random();
-
-            // create 5 monster objects and store to list
-            for (int i = 0; i < 5; i++)
-            {
-                //returns random number between 1-20
-                int defense = rand.Next(1, 21);
-                int strength = rand.Next(1, 21);
-
-                Monster randomMonster = new Monster(monsterId, $"Monster{i+1}", defense, strength);
-                _monsters.Add(randomMonster);
-            }
-
-            // pick a random monster in list
-            int index = rand.Next(_monsters.Count);
-            Monster pickedMonster = _monsters[index];
-
-
 
         }
 
