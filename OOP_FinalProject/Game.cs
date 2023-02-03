@@ -25,7 +25,12 @@ namespace OOP_FinalProject
 
         public static int CreateHero(string name)
         {
-            Hero newHero = new Hero(_heroIdCounter, name);
+            Random rand = new Random();
+            //generate strength and defence values between 50-100
+            int defense = rand.Next(50, 101);
+            int strength = rand.Next(50, 101);
+
+            Hero newHero = new Hero(_heroIdCounter, name, defense, strength);
             Heroes.Add(newHero);
             _heroIdCounter++;
 
@@ -129,9 +134,9 @@ namespace OOP_FinalProject
             // create 'count' monster objects and store to list
             for (int i = 0; i < count; i++)
             {
-                //returns random number between 1-20
-                int defense = rand.Next(1, 21);
-                int strength = rand.Next(1, 21);
+                //generate strength and defence values between 50-100
+                int defense = rand.Next(50, 101);
+                int strength = rand.Next(50, 101);
 
                 Monster randomMonster = new Monster(_monsterIdCounter, $"Monster{i + 1}", defense, strength);
                 Monsters.Add(randomMonster);
@@ -196,7 +201,17 @@ namespace OOP_FinalProject
                 _inventoryIdCounter++;
             }
         }
-        
+
+        public static void ReviveMonsters()
+        {
+            foreach (Monster m in Monsters)
+            {
+                if (m.IsDefeated)
+                    m.IsDefeated = false;
+            }
+        }
+
+
         public static void UpdateWeapon(Hero hero)
         {
             Console.WriteLine("Select a Weapon number from the list:");
@@ -211,7 +226,7 @@ namespace OOP_FinalProject
 
             int selected = Int32.Parse(Console.ReadLine());
 
-            if(selected < 1)
+            if(selected < 1 || selected > Weapons.Count)
             {
                 Console.WriteLine("Selection is invalid. Select a Weapon number from the list:");
                 selected = Int32.Parse(Console.ReadLine());
@@ -235,7 +250,7 @@ namespace OOP_FinalProject
 
             int selected = Int32.Parse(Console.ReadLine());
 
-            if(selected < 1)
+            if(selected < 1 || selected > ArmorList.Count)
             {
                 Console.WriteLine("Selection is invalid. Select an Armor number from the list:");
                 selected = Int32.Parse(Console.ReadLine());
@@ -247,12 +262,16 @@ namespace OOP_FinalProject
 
         public static void Start()
         {
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
+
             Menu1();
 
             string heroName = GetUserInput();
             int newHero = CreateHero(heroName);
 
-            // initialize a list of monsters
+            // initialize a list of monsters, weapons and armor
             CreateMonsters(5);
             CreateWeapons(5);
             CreateArmor(5);
@@ -332,6 +351,30 @@ namespace OOP_FinalProject
                         
                         break;
                     case "3":
+                        try
+                        {
+                            Hero? hero = GetHero(newHero);
+
+                            if (hero != null)
+                            {
+                                if(hero.Inventory.Weapon == null || hero.Inventory.Armor == null)
+                                {
+                                    Console.WriteLine("Sorry Hero! :-( You must have a Weapon and Armor to Fight.");
+                                } else
+                                {
+                                    FightHeader();
+                                    CoinToss(hero);                              
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Hero Player not Found.");
+                            }
+                        } 
+                        catch (Exception ex) 
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
                         break;
                     case "4":
                         Console.WriteLine("\nThanks for playing!");
@@ -343,8 +386,6 @@ namespace OOP_FinalProject
                         break;
                 }
             }
-            //            CreateMonsters();
-            //Console.WriteLine(Monsters.Count);
         }
 
         static string GetUserInput(string promptMsg = "")
@@ -357,7 +398,19 @@ namespace OOP_FinalProject
         public static void Menu1()
         {
             Console.WriteLine();
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine("**********************--------- WELCOME HERO! ---------**********************");
+            Console.WriteLine("---------------------*********************************-----------------------");
             Console.WriteLine("Enter your name:");
+        }
+        
+        public static void FightHeader()
+        {
+            Console.WriteLine();
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine("**********************------------ FIGHT! -----------**********************");
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine();
         }
         
         public static void Menu2()
@@ -368,6 +421,45 @@ namespace OOP_FinalProject
             Console.WriteLine("2. Manage Inventory");
             Console.WriteLine("3. Fight");
             Console.WriteLine("4. Exit");
+        }
+
+        // toss coin to randomly allow Hero to begin fight or Monster to begin fight
+        public static void CoinToss(Hero hero)
+        {
+            Random random = new Random();
+            int coin = random.Next(2);
+
+            // pick random monster with isDefeated = false
+            List<Monster> availableMonsters = new List<Monster>();
+            foreach(Monster m in Monsters)
+            {
+                if(!m.IsDefeated) { availableMonsters.Add(m); }
+            }
+
+            Monster chosenMonster = availableMonsters[random.Next(availableMonsters.Count)];
+
+            Console.WriteLine("Stats:");
+            Console.WriteLine();
+            hero.GetStats();
+            Console.WriteLine($"{hero.Inventory.Weapon.WeaponName}: Power - {hero.Inventory.Weapon.Power}");
+            Console.WriteLine($"{hero.Inventory.Armor.ArmorName}: Power - {hero.Inventory.Armor.Power}");
+            chosenMonster.GetStats();
+            Console.WriteLine();
+
+            Fight newFight = new Fight(_fightIdCounter, hero, chosenMonster);
+            _fightIdCounter++;
+            Fights.Add(newFight);
+
+            if (coin == 0) // Hero goes first
+            {
+                Console.WriteLine("Hero goes first");
+                newFight.HeroTurn(hero, chosenMonster, newFight);
+            }
+            else if (coin == 1) // Monster goes first
+            {
+                Console.WriteLine("Monster goes first");
+                newFight.MonsterTurn(hero, chosenMonster, newFight);
+            }
         }
     }
 }

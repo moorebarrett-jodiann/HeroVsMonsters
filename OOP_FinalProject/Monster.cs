@@ -53,20 +53,13 @@ namespace OOP_FinalProject
                 }
             }
         }
+
+        // current health will not have validation as it can have a negative value calculated
+        // during a fight
         public int CurrentHealth
         {
             get { return _currentHealth; }
-            set
-            {
-                if (value > 0 && value <= OriginalHealth)
-                {
-                    _currentHealth = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Current health must be greater than 0 and less than or equal to Original Health");
-                }
-            }
+            set { _currentHealth = value; }
         }
 
         public int Strength
@@ -99,6 +92,20 @@ namespace OOP_FinalProject
                     _defense = value;
                 }
             }
+        }
+
+        public string GetStats()
+        {
+            string stats = $"Monster's Name: {MonsterName}, BaseStrength: {Strength}, BaseDefence: {Defense}, OriginalHealth: {OriginalHealth}, and CurrentHealth: {CurrentHealth}";
+            Console.WriteLine(stats);
+            return stats;
+        }
+
+        public string GetFightStats()
+        {
+            string stats = "\nStats:\n";
+            stats += $"Monster’s Name: {MonsterName}, CurrentHealth: {CurrentHealth}";
+            return stats;
         }
 
         public bool IsDefeated

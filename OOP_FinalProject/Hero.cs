@@ -56,20 +56,13 @@ namespace OOP_FinalProject
                 }
             }
         }
+
+        // current health will not have validation as it can have a negative value calculated
+        // during a fight
         public int CurrentHealth
         {
             get { return _currentHealth; }
-            set
-            {
-                if(value > 0 && value <= OriginalHealth)
-                {
-                    _currentHealth = value;
-                } 
-                else
-                {
-                    throw new ArgumentException("Current health must be greater than 0 and less than or equal to Original Health");
-                }
-            }
+            set { _currentHealth = value; }
         }
         
         public int BaseStrength
@@ -114,10 +107,24 @@ namespace OOP_FinalProject
         {
             return _fights.ToHashSet();
         }
-
-        public void GetStats()
+        
+        public void AddFightHistory(Fight fight)
         {
-            Console.WriteLine($"Hero’s Name: {HeroName}, BaseStrength: {BaseStrength}, BaseDefence: {BaseDefense}, OriginalHealth: {OriginalHealth}, and CurrentHealth: {CurrentHealth}");
+            _fights.Add(fight);
+        }
+
+        public string GetStats()
+        {
+            string stats = $"Hero’s Name: {HeroName}, BaseStrength: {BaseStrength}, BaseDefence: {BaseDefense}, OriginalHealth: {OriginalHealth}, and CurrentHealth: {CurrentHealth}";
+            Console.WriteLine(stats);
+            return stats;
+        }
+
+        public string GetFightStats()
+        {
+            string stats = "\nStats:\n";
+            stats += $"Hero’s Name: {HeroName}, CurrentHealth: {CurrentHealth}";
+            return stats;
         }
 
         public void EquipWeapon(Weapon weapon)
@@ -130,14 +137,14 @@ namespace OOP_FinalProject
             Inventory.Armor = armor;
         }
 
-        public Hero(int id, string name)
+        public Hero(int id, string name, int defense, int strength)
         {
             _heroId = id;
             SetName(name);
-            _originalHealth = 100;
-            _currentHealth = 100;
-            _baseDefense = 100;
-            _baseStrength = 100;
+            OriginalHealth = 100;
+            CurrentHealth = 100;
+            BaseDefense = defense;
+            BaseStrength = strength;
         }
                 
         public Hero(int id, string name, Weapon weapon, Armor armor, int defense, int strength)
