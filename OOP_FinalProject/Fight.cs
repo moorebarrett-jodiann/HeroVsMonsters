@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace OOP_FinalProject
 {
@@ -38,12 +39,18 @@ namespace OOP_FinalProject
         }
 
         /***
-         * The “damage” of that attack is calculated by:
-         * Monster health - Damage: (Hero Base Strength + Equipped Weapon Power - Monster Defense)
+         * Damage Equation:
          * 
-         * Monster Health(20) - (5 + 10 - 3)
+         * Original equation was throwing off damage results. Did some research and found a solid solution to account for possible negative values
+         * and values that exceed original health
          * 
-         * For example, if the hero's Base Strength is 5, and the Equipped Weapon's Power is 10, and the Monster's Defence is 3, the resulting damage is 5 + 10 - 3 = 12. If the Monster has 20 health, it is reduced by 12, to 8. 
+         * if (attack >= defense) {
+         *      damage = attack * 2 - defense;
+         * } else {
+         *      damage = attack * attack / defense;
+         * }
+         * 
+         * https://tung.github.io/posts/simplest-non-problematic-damage-formula/#:~:text=damage%20%3D%20attack%20*%20attack%20%2F%20defense,the%20damage%20value%20will%20skyrocket
          * **/
         public void HeroTurn(Hero hero, Monster monster, Fight fight)
         {
@@ -52,45 +59,35 @@ namespace OOP_FinalProject
 
             // calculate damage
             int monsterHealth = monster.CurrentHealth;
-            int attack = hero.BaseStrength + hero.Inventory.Weapon.Power - monster.Defense;
+            int defense = monster.Defense;
+            int attack = hero.BaseStrength; 
+            int weaponPower = hero.Inventory.EquippedWeapon.Power;
 
-            monsterDamage = monsterHealth - attack;
-
-            // update monster current health
-            if(monsterDamage < 0)
+            if (attack >= defense)
             {
-                monster.CurrentHealth = 0;
-                Console.WriteLine($"Monster Damage: 0");
-            } 
-            else if (monsterDamage > monster.OriginalHealth)
-            {
-                monster.CurrentHealth = monster.OriginalHealth;
-                Console.WriteLine($"Monster Damage: {monster.OriginalHealth}");
-            } else
-            {
-                monster.CurrentHealth = monsterDamage;
-                Console.WriteLine($"Monster Damage: {monsterDamage}");
+                monsterDamage = monsterHealth - (((attack * 2) + weaponPower) - defense);
             }
+            else
+            {
+                monsterDamage = monsterHealth - (((attack * attack) + weaponPower) / defense);
+            }
+            
+            Console.WriteLine($"Damage: {monsterDamage}");
 
             // if monster is still alive, invoke MonsterTurn
-            if(monster.CurrentHealth > 0)
+            monster.CurrentHealth = monsterDamage;
+
+            if (monster.CurrentHealth > 0)
             {
                 Console.WriteLine("\nMonster's Turn");
                 MonsterTurn(hero, monster, fight);
-            } else
+            }
+            else
             {
                 Win(hero, monster, fight);
             }
         }
 
-        /***
-         * The “damage” of the Monster attack is calculated by:
-         * Hero Current Health - (Monster Strength - Hero Base Defence - Equipped Armours Power)
-         * 
-         * Hero Health(10) - (20 - 3 - 7)
-         * 
-         * For example, if the Monster's Strength is 20, and the Hero's Base Defence is 3, and their Equipped Armour's Power is 7, then the resulting damage is 20 - 3 - 7 = 10. If the Hero's current health is 10, then it is reduced to 0.
-         * **/
         public void MonsterTurn(Hero hero, Monster monster, Fight fight)
         {            
             int heroDamage = 0;
@@ -98,28 +95,24 @@ namespace OOP_FinalProject
 
             // calculate damage
             int heroHealth = hero.CurrentHealth;
-            int attack = monster.Strength - hero.BaseDefense - hero.Inventory.Armor.Power;
+            int defense = hero.BaseDefense; 
+            int attack = monster.Strength;
+            int armorPower = hero.Inventory.EquippedArmor.Power;
 
-            heroDamage = heroHealth - attack;
-
-            // update hero current health
-            if(heroDamage < 0)
+            if (attack >= defense)
             {
-                hero.CurrentHealth = 0;
-                Console.WriteLine($"Hero Damage: 0");
-            }
-            else if(heroDamage > hero.OriginalHealth)
-            {
-                hero.CurrentHealth = hero.OriginalHealth;
-                Console.WriteLine($"Hero Damage: {hero.OriginalHealth}");
+                heroDamage = heroHealth - (((attack * 2) + armorPower) - defense);
             }
             else
             {
-                hero.CurrentHealth = heroDamage;
-                Console.WriteLine($"Hero Damage: {heroDamage}");
+                heroDamage = heroHealth - (((attack * attack) + armorPower) / defense);
             }
 
+            Console.WriteLine($"Damage: {heroDamage}");
+
             // if hero is still alive, invoke HeroTurn
+            hero.CurrentHealth = heroDamage;
+
             if (hero.CurrentHealth > 0)
             {
                 Console.WriteLine("\nHero's Turn");
@@ -136,6 +129,9 @@ namespace OOP_FinalProject
         public void Win(Hero hero, Monster monster, Fight fight)
         {
             // set monster isdefeated to true
+            // reset hero current health to original health
+            // set Fight flag to 'HeroWins = true'
+            // add fight to hero fight Hashset
             Console.WriteLine("\nHero Wins!");
             hero.CurrentHealth = hero.OriginalHealth;
             monster.IsDefeated = true;
@@ -148,6 +144,10 @@ namespace OOP_FinalProject
          * **/
         public void Lose(Hero hero, Monster monster, Fight fight)
         {
+            // reset hero current health to original health
+            // revive any previously defeated monsters
+            // set Fight flag to 'HeroWins = false'
+            // add fight to hero fight Hashset
             Console.WriteLine("\nHero Loses!");
             hero.CurrentHealth = hero.OriginalHealth;
             Game.ReviveMonsters();

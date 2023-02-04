@@ -11,6 +11,7 @@ namespace OOP_FinalProject
         private int _heroId;
         private string _heroName;
 
+        // inventory object to hold hero equipped weapon and equipped armor
         private Inventory _inventory;
 
         private int _originalHealth;
@@ -113,6 +114,7 @@ namespace OOP_FinalProject
             _fights.Add(fight);
         }
 
+        // Displays the Hero’s Name, BaseStrength, BaseDefence, OriginalHealth, and CurrentHealth.
         public string GetStats()
         {
             string stats = $"Hero’s Name: {HeroName}, BaseStrength: {BaseStrength}, BaseDefence: {BaseDefense}, OriginalHealth: {OriginalHealth}, and CurrentHealth: {CurrentHealth}";
@@ -120,14 +122,16 @@ namespace OOP_FinalProject
             return stats;
         }
 
+        // change the Hero's equipped weapon
         public void EquipWeapon(Weapon weapon)
         {
-            Inventory.Weapon = weapon;
+            Inventory.EquippedWeapon = weapon;
         }
         
+        // change the Hero's equipped armor
         public void EquipArmor(Armor armor)
         {
-            Inventory.Armor = armor;
+            Inventory.EquippedArmor = armor;
         }
 
         public Hero(int id, string name, int defense, int strength)
@@ -144,8 +148,8 @@ namespace OOP_FinalProject
         {
             _heroId = id;
             SetName(name);
-            Inventory.Weapon = weapon;
-            Inventory.Armor = armor;
+            Inventory.EquippedWeapon = weapon;
+            Inventory.EquippedArmor = armor;
             OriginalHealth = 20;
             CurrentHealth = 20;
             BaseDefense = defense;

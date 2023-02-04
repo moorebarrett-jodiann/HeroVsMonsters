@@ -10,24 +10,24 @@ namespace OOP_FinalProject
     {
         private int _inventoryId;
         private Hero _hero;
-        private Weapon? _weapon;
-        private Armor? _armor;
+        private Weapon? _equippedWeapon;
+        private Armor? _equippedArmor;
 
         public int InventoryId
         {
             get { return _inventoryId; }
         }
 
-        public Weapon? Weapon
+        public Weapon? EquippedWeapon
         {
-            get { return _weapon; }
-            set { _weapon = value; }
+            get { return _equippedWeapon; }
+            set { _equippedWeapon = value; }
         }
 
-        public Armor? Armor
+        public Armor? EquippedArmor
         {
-            get { return _armor; }
-            set { _armor = value; }
+            get { return _equippedArmor; }
+            set { _equippedArmor = value; }
         }
         
         public Hero? Hero
@@ -36,11 +36,19 @@ namespace OOP_FinalProject
             set { _hero = value; }
         }
 
+        // returns what items the Hero is equipped with
+        public string GetInventory()
+        {
+            string inventory = $"{EquippedWeapon.WeaponName} with Power: {EquippedWeapon.Power}\n{EquippedArmor.ArmorName} with Power {EquippedArmor.Power}";
+            Console.WriteLine(inventory);
+            return inventory;
+        }
+
         public Inventory(int id, Hero hero)
         {
             _inventoryId = id;
-            Armor = null;
-            Weapon = null;
+            EquippedArmor = null;
+            EquippedWeapon = null;
             Hero = hero;
         }        
     }

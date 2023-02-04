@@ -144,6 +144,7 @@ namespace OOP_FinalProject
             }
         }
         
+        // create specific number of weapons with random values for power
         public static void CreateWeapons(int count)
         {
             Random rand = new Random();
@@ -168,6 +169,7 @@ namespace OOP_FinalProject
             }
         }
         
+        // create specific number of armor with random values for power
         public static void CreateArmor(int count)
         {
             Random rand = new Random();
@@ -221,8 +223,8 @@ namespace OOP_FinalProject
 
             if (hero != null)
             {
-                Weapon? weapon = hero.Inventory.Weapon;
-                Armor? armor = hero.Inventory.Armor;
+                Weapon? weapon = hero.Inventory.EquippedWeapon;
+                Armor? armor = hero.Inventory.EquippedArmor;
 
                 if (armor == null)
                 {
@@ -246,8 +248,7 @@ namespace OOP_FinalProject
 
                 Console.WriteLine();
                 Console.WriteLine("Press (1) to Update Weapon, (2) to Update Armor, (3) Go Back to Main Menu");
-                Console.WriteLine();
-                int equipOption = Int32.Parse(Console.ReadLine());
+                int equipOption = Int32.Parse(GetUserInput());
 
                 if (equipOption == 1)
                 {
@@ -265,7 +266,7 @@ namespace OOP_FinalProject
                 {
                     Console.WriteLine("Invalid Option Selected. Press (1) to Update Weapon or (2) to Update Armor");
                     Console.WriteLine();
-                    equipOption = Int32.Parse(Console.ReadLine());
+                    equipOption = Int32.Parse(GetUserInput());
                 }
             }
             else
@@ -287,12 +288,12 @@ namespace OOP_FinalProject
                 index++;
             }
 
-            int selected = Int32.Parse(Console.ReadLine());
+            int selected = Int32.Parse(GetUserInput());
 
             if(selected < 1 || selected > Weapons.Count)
             {
                 Console.WriteLine("Selection is invalid. Select a Weapon number from the list:");
-                selected = Int32.Parse(Console.ReadLine());
+                selected = Int32.Parse(GetUserInput());
             }
 
             hero.EquipWeapon(Weapons[selected - 1]);
@@ -312,12 +313,12 @@ namespace OOP_FinalProject
                 index++;
             }
 
-            int selected = Int32.Parse(Console.ReadLine());
+            int selected = Int32.Parse(GetUserInput());
 
             if(selected < 1 || selected > ArmorList.Count)
             {
                 Console.WriteLine("Selection is invalid. Select an Armor number from the list:");
-                selected = Int32.Parse(Console.ReadLine());
+                selected = Int32.Parse(GetUserInput());
             }
 
             hero.EquipArmor(ArmorList[selected - 1]);
@@ -385,8 +386,7 @@ namespace OOP_FinalProject
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
-                        }
-                        
+                        }                        
                         break;
                     case "3":
                         try
@@ -395,7 +395,7 @@ namespace OOP_FinalProject
 
                             if (hero != null)
                             {
-                                if(hero.Inventory.Weapon == null || hero.Inventory.Armor == null)
+                                if(hero.Inventory.EquippedWeapon == null || hero.Inventory.EquippedArmor == null)
                                 {
                                     Console.WriteLine("Sorry Hero! :-( You must have a Weapon and Armor to Fight.");
                                 } else
@@ -432,7 +432,7 @@ namespace OOP_FinalProject
             int coin = random.Next(2);
             bool monstersAvailable = false;
 
-            // pick random monster with isDefeated = false
+            // search Monster list to create subcollection of undefeated monsters to fight against hero
             List<Monster> availableMonsters = new List<Monster>();
             foreach(Monster m in Monsters)
             {
@@ -452,17 +452,20 @@ namespace OOP_FinalProject
                         availableMonsters.Add(m);
                     }
                 }
-
+                // select a random monster from list of available monsters
                 Monster chosenMonster = availableMonsters[random.Next(availableMonsters.Count)];
 
+                // display hero and monster stats before fight
                 Console.WriteLine("Stats:");
                 Console.WriteLine();
                 hero.GetStats();
-                Console.WriteLine($"{hero.Inventory.Weapon.WeaponName}: Power - {hero.Inventory.Weapon.Power}");
-                Console.WriteLine($"{hero.Inventory.Armor.ArmorName}: Power - {hero.Inventory.Armor.Power}");
+                hero.Inventory.GetInventory();
                 chosenMonster.GetStats();
                 Console.WriteLine();
+                //Console.WriteLine($"{hero.Inventory.EquippedWeapon.WeaponName}: Power - {hero.Inventory.EquippedWeapon.Power}");
+                //Console.WriteLine($"{hero.Inventory.EquippedArmor.ArmorName}: Power - {hero.Inventory.EquippedArmor.Power}");
 
+                // initialize new Fight object
                 Fight newFight = new Fight(_fightIdCounter, hero, chosenMonster);
                 _fightIdCounter++;
                 Fights.Add(newFight);
@@ -478,9 +481,9 @@ namespace OOP_FinalProject
                     newFight.MonsterTurn(hero, chosenMonster, newFight);
                 }
             } 
-            else
+            else // if no monsters are avilable, Hero has cleared the level
             {
-                Console.WriteLine("No monsters available to fight.");
+                Console.WriteLine("AWESOME JOB! Level Cleared!");
                 return;
             }
         }
@@ -496,7 +499,7 @@ namespace OOP_FinalProject
         {
             Console.WriteLine();
             Console.WriteLine("---------------------*********************************-----------------------");
-            Console.WriteLine("**********************--------- WELCOME HERO! ---------**********************");
+            Console.WriteLine("**********************-------- WELCOME HERO! --------************************");
             Console.WriteLine("---------------------*********************************-----------------------");
             Console.WriteLine("Enter your name:");
         }
@@ -505,7 +508,7 @@ namespace OOP_FinalProject
         {
             Console.WriteLine();
             Console.WriteLine("---------------------*********************************-----------------------");
-            Console.WriteLine("*********************----------- STATISTICS -----------**********************");
+            Console.WriteLine("**********************---------- STATISTICS ---------************************");
             Console.WriteLine("---------------------*********************************-----------------------");
             Console.WriteLine();
         }
@@ -514,7 +517,7 @@ namespace OOP_FinalProject
         {
             Console.WriteLine();
             Console.WriteLine("---------------------*********************************-----------------------");
-            Console.WriteLine("**********************----------- INVENTORY -----------**********************");
+            Console.WriteLine("**********************----------- INVENTORY ---------************************");
             Console.WriteLine("---------------------*********************************-----------------------");
             Console.WriteLine();
         }
