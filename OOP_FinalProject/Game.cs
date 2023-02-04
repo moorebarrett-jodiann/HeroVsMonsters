@@ -191,6 +191,7 @@ namespace OOP_FinalProject
                 }
             }
         }
+
         public static void InitInventory(Hero hero)
         {
             if(hero != null)
@@ -214,9 +215,68 @@ namespace OOP_FinalProject
             }
         }
 
+        public static void ManageInventory(int heroId)
+        {
+            Hero? hero = GetHero(heroId);
+
+            if (hero != null)
+            {
+                Weapon? weapon = hero.Inventory.Weapon;
+                Armor? armor = hero.Inventory.Armor;
+
+                if (armor == null)
+                {
+                    Console.WriteLine("You have no Armor.");
+                }
+                else
+                {
+                    string currArmor = (armor != null) ? $"Current armor: {armor.ArmorName} with Power: {armor.Power}" : "[not selected]";
+                    Console.WriteLine(currArmor);
+                }
+
+                if (weapon == null)
+                {
+                    Console.WriteLine("You have no Weapons.");
+                }
+                else
+                {
+                    string currWeapon = (weapon != null) ? $"Current weapon: {weapon.WeaponName} with Power: {weapon.Power}" : "[not selected]";
+                    Console.WriteLine(currWeapon);
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("Press (1) to Update Weapon, (2) to Update Armor, (3) Go Back to Main Menu");
+                Console.WriteLine();
+                int equipOption = Int32.Parse(Console.ReadLine());
+
+                if (equipOption == 1)
+                {
+                    UpdateWeapon(hero);
+                }
+                else if (equipOption == 2)
+                {
+                    UpdateArmor(hero);
+                }
+                else if (equipOption == 3)
+                {
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Option Selected. Press (1) to Update Weapon or (2) to Update Armor");
+                    Console.WriteLine();
+                    equipOption = Int32.Parse(Console.ReadLine());
+                }
+            }
+            else
+            {
+                Console.WriteLine("Hero Player not Found");
+            }
+        }
 
         public static void UpdateWeapon(Hero hero)
         {
+            Console.WriteLine();
             Console.WriteLine("Select a Weapon number from the list:");
             Console.WriteLine();
             int index = 0;
@@ -241,6 +301,7 @@ namespace OOP_FinalProject
         
         public static void UpdateArmor(Hero hero)
         {
+            Console.WriteLine();
             Console.WriteLine("Select an Armor number from the list:");
             Console.WriteLine();
             int index = 0;
@@ -261,6 +322,29 @@ namespace OOP_FinalProject
 
             hero.EquipArmor(ArmorList[selected - 1]);
             Console.WriteLine($"Armor successfully updated");
+        }
+
+        public static void ShowStatistics()
+        {
+            int totalFights = Fights.Count;
+            int fightsWon = 0;
+            int fightsLost = 0;
+
+            foreach (Fight f in Fights)
+            {
+                if(f.HeroWins)
+                {
+                    fightsWon++;
+                } 
+                else
+                {
+                    fightsLost++;
+                }
+            }
+
+            Console.WriteLine($"Total Fights: {totalFights}");
+            Console.WriteLine($"Fights Won: {fightsWon}");
+            Console.WriteLine($"Fights Lost: {fightsLost}");
         }
 
         public static void Start()
@@ -289,64 +373,14 @@ namespace OOP_FinalProject
                 switch (selection)
                 {
                     case "1":
+                        StaticsticsHeader();
+                        ShowStatistics();
                         break;
                     case "2":
                         InventoryHeader();
                         try
                         {
-                            Hero? hero = GetHero(newHero);
-
-                            if (hero != null)
-                            {
-                                Weapon? weapon = hero.Inventory.Weapon;
-                                Armor? armor = hero.Inventory.Armor;
-
-                                if (armor == null)
-                                {
-                                    Console.WriteLine("You have no Armor.");
-                                }
-                                else
-                                {
-                                    string currArmor = (armor != null) ? $"Current armor: {armor.ArmorName} with Power: {armor.Power}" : "[not selected]";
-                                    Console.WriteLine(currArmor);                                    
-                                }
-
-                                if (weapon == null)
-                                {
-                                    Console.WriteLine("You have no Weapons.");
-                                }
-                                else
-                                {
-                                    string currWeapon = (weapon != null) ? $"Current weapon: {weapon.WeaponName} with Power: {weapon.Power}" : "[not selected]";
-                                    Console.WriteLine(currWeapon);
-                                }
-
-                                Console.WriteLine();
-                                Console.WriteLine("Press (1) to Update Weapon, (2) to Update Armor, (3) Go Back to Main Menu");
-                                int equipOption = Int32.Parse(Console.ReadLine());
-
-                                if (equipOption == 1)
-                                {
-                                    UpdateWeapon(hero);
-                                }
-                                else if (equipOption == 2)
-                                {
-                                    UpdateArmor(hero);
-                                }
-                                else if (equipOption == 3)
-                                {
-                                    break;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Invalid Option Selected. Press (1) to Update Weapon or (2) to Update Armor");
-                                    equipOption = Int32.Parse(Console.ReadLine());
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("Hero Player not Found");
-                            }
+                            ManageInventory(newHero);
                         }
                         catch (Exception ex)
                         {
@@ -384,7 +418,6 @@ namespace OOP_FinalProject
                         Console.WriteLine("\nThanks for playing!");
                         looping = false;
                         break;
-
                     default:
                         Console.WriteLine("Invalid input. Please try again.");
                         break;

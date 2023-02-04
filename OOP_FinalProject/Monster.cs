@@ -101,13 +101,6 @@ namespace OOP_FinalProject
             return stats;
         }
 
-        public string GetFightStats()
-        {
-            string stats = "\nStats:\n";
-            stats += $"Monster’s Name: {MonsterName}, CurrentHealth: {CurrentHealth}";
-            return stats;
-        }
-
         public bool IsDefeated
         {
             get { return _isDefeated; }

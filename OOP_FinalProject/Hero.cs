@@ -120,13 +120,6 @@ namespace OOP_FinalProject
             return stats;
         }
 
-        public string GetFightStats()
-        {
-            string stats = "\nStats:\n";
-            stats += $"Hero’s Name: {HeroName}, CurrentHealth: {CurrentHealth}";
-            return stats;
-        }
-
         public void EquipWeapon(Weapon weapon)
         {
             Inventory.Weapon = weapon;

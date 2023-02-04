@@ -9,7 +9,7 @@ namespace OOP_FinalProject
     public class Fight
     {
         private int _fightId;
-        private bool? _heroWins;
+        private bool _heroWins;
 
         private Hero _hero;
         private Monster _monster;
@@ -31,7 +31,7 @@ namespace OOP_FinalProject
             set { _monster = value; }
         }
 
-        public bool? HeroWins
+        public bool HeroWins
         {
             get { return _heroWins; }
             set { _heroWins = value; }
@@ -76,7 +76,6 @@ namespace OOP_FinalProject
             if(monster.CurrentHealth > 0)
             {
                 Console.WriteLine("\nMonster's Turn");
-                monster.GetFightStats();
                 MonsterTurn(hero, monster, fight);
             } else
             {
@@ -124,7 +123,6 @@ namespace OOP_FinalProject
             if (hero.CurrentHealth > 0)
             {
                 Console.WriteLine("\nHero's Turn");
-                hero.GetFightStats();
                 HeroTurn(hero, monster, fight);
             } else
             {
@@ -162,7 +160,7 @@ namespace OOP_FinalProject
             _fightId = id;
             Hero = hero;
             Monster = monster;
-            HeroWins = null;
+            HeroWins = false;
         }
     }
 }
