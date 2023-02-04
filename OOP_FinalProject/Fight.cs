@@ -9,6 +9,7 @@ namespace OOP_FinalProject
     public class Fight
     {
         private int _fightId;
+        private bool? _heroWins;
 
         private Hero _hero;
         private Monster _monster;
@@ -30,6 +31,12 @@ namespace OOP_FinalProject
             set { _monster = value; }
         }
 
+        public bool? HeroWins
+        {
+            get { return _heroWins; }
+            set { _heroWins = value; }
+        }
+
         /***
          * The “damage” of that attack is calculated by:
          * Monster health - Damage: (Hero Base Strength + Equipped Weapon Power - Monster Defense)
@@ -46,12 +53,24 @@ namespace OOP_FinalProject
             // calculate damage
             int monsterHealth = monster.CurrentHealth;
             int attack = hero.BaseStrength + hero.Inventory.Weapon.Power - monster.Defense;
-            Console.WriteLine($"Attack: {attack}");
+
             monsterDamage = monsterHealth - attack;
-            Console.WriteLine($"Monster Damage: {monsterDamage}");
 
             // update monster current health
-            monster.CurrentHealth = monsterDamage;
+            if(monsterDamage < 0)
+            {
+                monster.CurrentHealth = 0;
+                Console.WriteLine($"Monster Damage: 0");
+            } 
+            else if (monsterDamage > monster.OriginalHealth)
+            {
+                monster.CurrentHealth = monster.OriginalHealth;
+                Console.WriteLine($"Monster Damage: {monster.OriginalHealth}");
+            } else
+            {
+                monster.CurrentHealth = monsterDamage;
+                Console.WriteLine($"Monster Damage: {monsterDamage}");
+            }
 
             // if monster is still alive, invoke MonsterTurn
             if(monster.CurrentHealth > 0)
@@ -81,12 +100,26 @@ namespace OOP_FinalProject
             // calculate damage
             int heroHealth = hero.CurrentHealth;
             int attack = monster.Strength - hero.BaseDefense - hero.Inventory.Armor.Power;
-            Console.WriteLine($"Attack: {attack}");
+
             heroDamage = heroHealth - attack;
-            Console.WriteLine($"Hero Damage: {heroDamage}");
 
             // update hero current health
-            hero.CurrentHealth = heroDamage;
+            if(heroDamage < 0)
+            {
+                hero.CurrentHealth = 0;
+                Console.WriteLine($"Hero Damage: 0");
+            }
+            else if(heroDamage > hero.OriginalHealth)
+            {
+                hero.CurrentHealth = hero.OriginalHealth;
+                Console.WriteLine($"Hero Damage: {hero.OriginalHealth}");
+            }
+            else
+            {
+                hero.CurrentHealth = heroDamage;
+                Console.WriteLine($"Hero Damage: {heroDamage}");
+            }
+
             // if hero is still alive, invoke HeroTurn
             if (hero.CurrentHealth > 0)
             {
@@ -108,6 +141,7 @@ namespace OOP_FinalProject
             Console.WriteLine("\nHero Wins!");
             hero.CurrentHealth = hero.OriginalHealth;
             monster.IsDefeated = true;
+            HeroWins = true;
             hero.AddFightHistory(fight);
         }
 
@@ -119,6 +153,7 @@ namespace OOP_FinalProject
             Console.WriteLine("\nHero Loses!");
             hero.CurrentHealth = hero.OriginalHealth;
             Game.ReviveMonsters();
+            HeroWins = false;
             hero.AddFightHistory(fight);
         }
 
@@ -127,6 +162,7 @@ namespace OOP_FinalProject
             _fightId = id;
             Hero = hero;
             Monster = monster;
+            HeroWins = null;
         }
     }
 }

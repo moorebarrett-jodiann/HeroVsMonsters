@@ -118,8 +118,8 @@ namespace OOP_FinalProject
         {
             _monsterId = id;
             SetName(name);
-            OriginalHealth = 100;
-            CurrentHealth = 100;
+            OriginalHealth = 20;
+            CurrentHealth = 20;
             Defense = defense;
             Strength = strength;
             _isDefeated = false;

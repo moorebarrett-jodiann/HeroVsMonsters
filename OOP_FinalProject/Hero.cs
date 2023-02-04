@@ -141,8 +141,8 @@ namespace OOP_FinalProject
         {
             _heroId = id;
             SetName(name);
-            OriginalHealth = 100;
-            CurrentHealth = 100;
+            OriginalHealth = 20;
+            CurrentHealth = 20;
             BaseDefense = defense;
             BaseStrength = strength;
         }
@@ -153,8 +153,8 @@ namespace OOP_FinalProject
             SetName(name);
             Inventory.Weapon = weapon;
             Inventory.Armor = armor;
-            OriginalHealth = 100;
-            CurrentHealth = 100;
+            OriginalHealth = 20;
+            CurrentHealth = 20;
             BaseDefense = defense;
             BaseStrength = strength;
         }

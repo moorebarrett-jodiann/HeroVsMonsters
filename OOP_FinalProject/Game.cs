@@ -27,8 +27,8 @@ namespace OOP_FinalProject
         {
             Random rand = new Random();
             //generate strength and defence values between 50-100
-            int defense = rand.Next(50, 101);
-            int strength = rand.Next(50, 101);
+            int defense = rand.Next(1, 11);
+            int strength = rand.Next(1, 11);
 
             Hero newHero = new Hero(_heroIdCounter, name, defense, strength);
             Heroes.Add(newHero);
@@ -135,8 +135,8 @@ namespace OOP_FinalProject
             for (int i = 0; i < count; i++)
             {
                 //generate strength and defence values between 50-100
-                int defense = rand.Next(50, 101);
-                int strength = rand.Next(50, 101);
+                int defense = rand.Next(1, 11);
+                int strength = rand.Next(1, 11);
 
                 Monster randomMonster = new Monster(_monsterIdCounter, $"Monster{i + 1}", defense, strength);
                 Monsters.Add(randomMonster);
@@ -153,7 +153,7 @@ namespace OOP_FinalProject
             while(Weapons.Count < count)
             {
                 //returns random number between 1-20
-                int power = rand.Next(1, 21);                
+                int power = rand.Next(1, 11);                
 
                 // if power value was already generated dont create a weapon with that power
                 if (!randomIndexList.Contains(power))
@@ -207,7 +207,10 @@ namespace OOP_FinalProject
             foreach (Monster m in Monsters)
             {
                 if (m.IsDefeated)
+                {
                     m.IsDefeated = false;
+                    m.CurrentHealth = m.OriginalHealth;
+                }
             }
         }
 
@@ -266,7 +269,7 @@ namespace OOP_FinalProject
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
 
-            Menu1();
+            WelcomeHeader();
 
             string heroName = GetUserInput();
             int newHero = CreateHero(heroName);
@@ -288,6 +291,7 @@ namespace OOP_FinalProject
                     case "1":
                         break;
                     case "2":
+                        InventoryHeader();
                         try
                         {
                             Hero? hero = GetHero(newHero);
@@ -388,6 +392,66 @@ namespace OOP_FinalProject
             }
         }
 
+        // toss coin to randomly allow Hero to begin fight or Monster to begin fight
+        public static void CoinToss(Hero hero)
+        {
+            Random random = new Random();
+            int coin = random.Next(2);
+            bool monstersAvailable = false;
+
+            // pick random monster with isDefeated = false
+            List<Monster> availableMonsters = new List<Monster>();
+            foreach(Monster m in Monsters)
+            {
+                if (!m.IsDefeated)
+                {
+                    monstersAvailable = true;
+                    break;
+                }
+            }
+
+            if(monstersAvailable)
+            {
+                foreach (Monster m in Monsters)
+                {
+                    if (!m.IsDefeated)
+                    {
+                        availableMonsters.Add(m);
+                    }
+                }
+
+                Monster chosenMonster = availableMonsters[random.Next(availableMonsters.Count)];
+
+                Console.WriteLine("Stats:");
+                Console.WriteLine();
+                hero.GetStats();
+                Console.WriteLine($"{hero.Inventory.Weapon.WeaponName}: Power - {hero.Inventory.Weapon.Power}");
+                Console.WriteLine($"{hero.Inventory.Armor.ArmorName}: Power - {hero.Inventory.Armor.Power}");
+                chosenMonster.GetStats();
+                Console.WriteLine();
+
+                Fight newFight = new Fight(_fightIdCounter, hero, chosenMonster);
+                _fightIdCounter++;
+                Fights.Add(newFight);
+
+                if (coin == 0) // Hero goes first
+                {
+                    Console.WriteLine("Hero goes first");
+                    newFight.HeroTurn(hero, chosenMonster, newFight);
+                }
+                else if (coin == 1) // Monster goes first
+                {
+                    Console.WriteLine("Monster goes first");
+                    newFight.MonsterTurn(hero, chosenMonster, newFight);
+                }
+            } 
+            else
+            {
+                Console.WriteLine("No monsters available to fight.");
+                return;
+            }
+        }
+
         static string GetUserInput(string promptMsg = "")
         {
             Console.WriteLine(promptMsg);
@@ -395,7 +459,7 @@ namespace OOP_FinalProject
             return userInput!;
         }
 
-        public static void Menu1()
+        public static void WelcomeHeader()
         {
             Console.WriteLine();
             Console.WriteLine("---------------------*********************************-----------------------");
@@ -403,7 +467,25 @@ namespace OOP_FinalProject
             Console.WriteLine("---------------------*********************************-----------------------");
             Console.WriteLine("Enter your name:");
         }
+
+        public static void StaticsticsHeader()
+        {
+            Console.WriteLine();
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine("*********************----------- STATISTICS -----------**********************");
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine();
+        }
         
+        public static void InventoryHeader()
+        {
+            Console.WriteLine();
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine("**********************----------- INVENTORY -----------**********************");
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine();
+        }
+
         public static void FightHeader()
         {
             Console.WriteLine();
@@ -412,7 +494,7 @@ namespace OOP_FinalProject
             Console.WriteLine("---------------------*********************************-----------------------");
             Console.WriteLine();
         }
-        
+
         public static void Menu2()
         {
             Console.WriteLine();
@@ -421,45 +503,6 @@ namespace OOP_FinalProject
             Console.WriteLine("2. Manage Inventory");
             Console.WriteLine("3. Fight");
             Console.WriteLine("4. Exit");
-        }
-
-        // toss coin to randomly allow Hero to begin fight or Monster to begin fight
-        public static void CoinToss(Hero hero)
-        {
-            Random random = new Random();
-            int coin = random.Next(2);
-
-            // pick random monster with isDefeated = false
-            List<Monster> availableMonsters = new List<Monster>();
-            foreach(Monster m in Monsters)
-            {
-                if(!m.IsDefeated) { availableMonsters.Add(m); }
-            }
-
-            Monster chosenMonster = availableMonsters[random.Next(availableMonsters.Count)];
-
-            Console.WriteLine("Stats:");
-            Console.WriteLine();
-            hero.GetStats();
-            Console.WriteLine($"{hero.Inventory.Weapon.WeaponName}: Power - {hero.Inventory.Weapon.Power}");
-            Console.WriteLine($"{hero.Inventory.Armor.ArmorName}: Power - {hero.Inventory.Armor.Power}");
-            chosenMonster.GetStats();
-            Console.WriteLine();
-
-            Fight newFight = new Fight(_fightIdCounter, hero, chosenMonster);
-            _fightIdCounter++;
-            Fights.Add(newFight);
-
-            if (coin == 0) // Hero goes first
-            {
-                Console.WriteLine("Hero goes first");
-                newFight.HeroTurn(hero, chosenMonster, newFight);
-            }
-            else if (coin == 1) // Monster goes first
-            {
-                Console.WriteLine("Monster goes first");
-                newFight.MonsterTurn(hero, chosenMonster, newFight);
-            }
         }
     }
 }
