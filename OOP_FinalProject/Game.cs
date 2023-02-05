@@ -235,9 +235,15 @@ namespace OOP_FinalProject
                     Console.WriteLine(currWeapon);
                 }
 
-                Console.WriteLine();
-                Console.WriteLine("Press (1) to Update Weapon, (2) to Update Armor, (3) Go Back to Main Menu");
+                ManageInventoryMenu();
                 int equipOption = Int32.Parse(GetUserInput());
+
+                while(equipOption != 1 && equipOption != 2 && equipOption != 3)
+                {
+                    Console.WriteLine("Invalid Option Selected");
+                    ManageInventoryMenu();
+                    equipOption = Int32.Parse(GetUserInput());
+                }
 
                 if (equipOption == 1)
                 {
@@ -250,12 +256,6 @@ namespace OOP_FinalProject
                 else if (equipOption == 3)
                 {
                     return;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid Option Selected. Press (1) to Update Weapon or (2) to Update Armor");
-                    Console.WriteLine();
-                    equipOption = Int32.Parse(GetUserInput());
                 }
             }
             else
@@ -273,7 +273,7 @@ namespace OOP_FinalProject
 
             foreach (Weapon weapon in Weapons)
             {
-                Console.WriteLine($"{index + 1} - {weapon.WeaponName}: Power ({weapon.Power})");
+                Console.WriteLine($"{index + 1}. {weapon.WeaponName}: Power ({weapon.Power})");
                 index++;
             }
 
@@ -339,7 +339,7 @@ namespace OOP_FinalProject
 
         public static void Start()
         {
-            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
 
@@ -386,7 +386,7 @@ namespace OOP_FinalProject
                             {
                                 if(hero.Inventory.EquippedWeapon == null || hero.Inventory.EquippedArmor == null)
                                 {
-                                    Console.WriteLine("Sorry Hero! :-( You must have a Weapon and Armor to Fight.");
+                                    Console.WriteLine($"\nSorry {hero.HeroName}! :-( You must have a Weapon and Armor to Fight.");
                                 } else
                                 {
                                     FightHeader();
@@ -445,8 +445,8 @@ namespace OOP_FinalProject
                 Monster chosenMonster = availableMonsters[random.Next(availableMonsters.Count)];
 
                 // display hero and monster stats before fight
-                Console.WriteLine("Stats:");
-                Console.WriteLine();
+                Console.WriteLine("Players Stats:");
+                Console.WriteLine("-----------------------------------------------------------------------------");
                 hero.GetStats();
                 hero.Inventory.GetInventory();
                 chosenMonster.GetStats();
@@ -513,18 +513,26 @@ namespace OOP_FinalProject
         {
             Console.WriteLine();
             Console.WriteLine("---------------------*********************************-----------------------");
-            Console.WriteLine("**********************------------- FIGHT! ------------**********************");
+            Console.WriteLine("**********************------------- FIGHT! ----------************************");
             Console.WriteLine("---------------------*********************************-----------------------");
             Console.WriteLine();
+        }
+        
+        public static void ManageInventoryMenu()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Choose an option:");
+            Console.WriteLine("1. Equip Weapon");
+            Console.WriteLine("2. Equip Armor");
+            Console.WriteLine("3. Back to Main Menu");
         }
 
         public static void Menu2()
         {
             Console.WriteLine();
             Console.WriteLine("---------------------*********************************-----------------------");
-            Console.WriteLine("*********************------------ MAIN MENU -----------**********************");
+            Console.WriteLine("**********************----------- MAIN MENU ---------************************");
             Console.WriteLine("---------------------*********************************-----------------------");
-            Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("Choose an option:");
             Console.WriteLine("1. Display Statistics");

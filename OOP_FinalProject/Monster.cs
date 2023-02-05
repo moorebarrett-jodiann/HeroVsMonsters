@@ -54,7 +54,6 @@ namespace OOP_FinalProject
             }
         }
 
-
         public int CurrentHealth
         {
             get { return _currentHealth; }

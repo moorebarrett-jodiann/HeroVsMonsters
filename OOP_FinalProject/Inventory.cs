@@ -9,7 +9,7 @@ namespace OOP_FinalProject
     public class Inventory
     {
         private int _inventoryId;
-        private Hero _hero;
+        private Hero? _hero;
         private Weapon? _equippedWeapon;
         private Armor? _equippedArmor;
 

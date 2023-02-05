@@ -33,12 +33,12 @@ namespace OOP_FinalProject
 
         public void SetName(string name)
         {
-            if(name.Length > 3)
+            if(name.Length > 2 && name.All(char.IsLetterOrDigit))
             {
                 _heroName = name;
             } else
             {
-                throw new ArgumentException("Hero name must contain 3 or more characters");
+                throw new ArgumentException("Hero name must contain 3 or more alphanumeric characters");
             }
         }
 
