@@ -57,8 +57,6 @@ namespace OOP_FinalProject
             int damage = 0;
             int newHealth = 0;
 
-            Console.WriteLine($"Monster current health: {monster.CurrentHealth}");
-
             // calculate damage
             int monsterHealth = monster.CurrentHealth;
             int defense = monster.Defense;
@@ -68,23 +66,27 @@ namespace OOP_FinalProject
             if (attack >= defense)
             {
                 damage = (((attack * 2) + weaponPower) - defense);
+                Console.WriteLine($"Damage: {damage}");
             }
             else
             {
                 damage = (((attack * attack) + weaponPower) / defense);
+                Console.WriteLine($"Damage: {damage}");
             }
-
+            
             newHealth = monsterHealth - damage;
 
             if (newHealth > 0)
             {
                 // update monster health
                 monster.CurrentHealth = monsterHealth - damage;
+                Console.WriteLine($"Monster current health: {monster.CurrentHealth}");
             }
             else
             {
                 // update monster health
                 monster.CurrentHealth = 0;
+                Console.WriteLine($"Monster current health: 0");
             }
 
             // if monster is still alive, invoke MonsterTurn
@@ -103,8 +105,7 @@ namespace OOP_FinalProject
         {            
             int damage = 0;
             int newHealth = 0;
-            Console.WriteLine($"Hero current health: {hero.CurrentHealth}");
-
+            
             // calculate damage
             int heroHealth = hero.CurrentHealth;
             int defense = hero.BaseDefense; 
@@ -114,25 +115,27 @@ namespace OOP_FinalProject
             if (attack >= defense)
             {
                 damage = (((attack * 2) + armorPower) - defense);
+                Console.WriteLine($"Damage: {damage}");
             }
             else
             {
                 damage = (((attack * attack) + armorPower) / defense);
+                Console.WriteLine($"Damage: {damage}");
             }
 
-            Console.WriteLine($"Damage: {damage}");
-            
             newHealth = heroHealth - damage;
 
             if(newHealth > 0)
             {
                 // update hero health
                 hero.CurrentHealth = heroHealth - damage;
+                Console.WriteLine($"Hero current health: {hero.CurrentHealth}");
             } 
             else
             {
                 // update hero health
                 hero.CurrentHealth = 0;
+                Console.WriteLine($"Hero current health: 0");
             }
 
             // if hero is still alive, invoke HeroTurn

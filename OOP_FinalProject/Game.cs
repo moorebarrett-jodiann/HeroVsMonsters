@@ -23,18 +23,32 @@ namespace OOP_FinalProject
         private static int _inventoryIdCounter = 1;
         private static int _fightIdCounter = 1;
 
-        public static int CreateHero(string name)
+        public static int InitHero(string name)
         {
-            Random rand = new Random();
-            //generate strength and defence values between 1 - 20
-            int defense = rand.Next(1, 21);
-            int strength = rand.Next(1, 21);
-
-            Hero newHero = new Hero(_heroIdCounter, name, defense, strength);
+            Hero newHero = new Hero(_heroIdCounter, name);
             Heroes.Add(newHero);
             _heroIdCounter++;
 
             return newHero.HeroId;
+        }
+
+        public static void UpdateHeroStats(int id)
+        {
+            Hero? hero = GetHero(id);
+
+            if (hero != null)
+            {
+                Random rand = new Random();
+                //generate strength and defence values between 5 - 20
+                int defense = rand.Next(5, 21);
+                int strength = rand.Next(5, 21);
+
+                hero.BaseDefense = defense;
+                hero.BaseStrength = strength;
+            } else
+            {
+                Console.WriteLine("Hero not found.");
+            }
         }
 
         public static Hero? GetHero(int id)
@@ -135,8 +149,8 @@ namespace OOP_FinalProject
             for (int i = 0; i < count; i++)
             {
                 //generate strength and defence values between 1 - 20
-                int defense = rand.Next(1, 31);
-                int strength = rand.Next(1, 31);
+                int defense = rand.Next(1, 21);
+                int strength = rand.Next(1, 21);
 
                 Monster randomMonster = new Monster(_monsterIdCounter, $"Monster{i + 1}", defense, strength);
                 Monsters.Add(randomMonster);
@@ -346,7 +360,7 @@ namespace OOP_FinalProject
             WelcomeHeader();
 
             string heroName = GetUserInput();
-            int newHero = CreateHero(heroName);
+            int newHero = InitHero(heroName);
 
             // initialize a list of monsters, weapons and armor
             CreateMonsters(5);
@@ -417,61 +431,73 @@ namespace OOP_FinalProject
         // toss coin to randomly allow Hero to begin fight or Monster to begin fight
         public static void CoinToss(Hero hero)
         {
-            Random random = new Random();
-            int coin = random.Next(2);
-            bool monstersAvailable = false;
-
-            // search Monster list to create subcollection of undefeated monsters to fight against hero
-            List<Monster> availableMonsters = new List<Monster>();
-            foreach(Monster m in Monsters)
+            if (hero != null)
             {
-                if (!m.IsDefeated)
-                {
-                    monstersAvailable = true;
-                    break;
-                }
-            }
+                UpdateHeroStats(hero.HeroId);
 
-            if(monstersAvailable)
-            {
+                Random random = new Random();
+                int coin = random.Next(2);
+                bool monstersAvailable = false;
+
+                // search Monster list to create subcollection of undefeated monsters to fight against hero
+                List<Monster> availableMonsters = new List<Monster>();
                 foreach (Monster m in Monsters)
                 {
                     if (!m.IsDefeated)
                     {
-                        availableMonsters.Add(m);
+                        monstersAvailable = true;
+                        break;
                     }
                 }
-                // select a random monster from list of available monsters
-                Monster chosenMonster = availableMonsters[random.Next(availableMonsters.Count)];
 
-                // display hero and monster stats before fight
-                Console.WriteLine("Players Stats:");
-                Console.WriteLine("-----------------------------------------------------------------------------");
-                hero.GetStats();
-                hero.Inventory.GetInventory();
-                chosenMonster.GetStats();
-                Console.WriteLine();
-
-                // initialize new Fight object
-                Fight newFight = new Fight(_fightIdCounter, hero, chosenMonster);
-                _fightIdCounter++;
-                Fights.Add(newFight);
-
-                if (coin == 0) // Hero goes first
+                if (monstersAvailable)
                 {
-                    Console.WriteLine("Hero goes first");
-                    newFight.HeroTurn(hero, chosenMonster, newFight);
+                    foreach (Monster m in Monsters)
+                    {
+                        if (!m.IsDefeated)
+                        {
+                            availableMonsters.Add(m);
+                        }
+                    }
+                    // select a random monster from list of available monsters
+                    Monster chosenMonster = availableMonsters[random.Next(availableMonsters.Count)];
+
+                    // display hero and monster stats before fight
+                    Console.WriteLine(" Battle Info:");
+                    Console.WriteLine("--------------");
+                    hero.GetStats();
+                    hero.Inventory.GetInventory();
+                    chosenMonster.GetStats();
+                    Console.WriteLine();
+
+                    // initialize new Fight object
+                    Fight newFight = new Fight(_fightIdCounter, hero, chosenMonster);
+                    _fightIdCounter++;
+                    Fights.Add(newFight);
+
+                    Console.WriteLine(" BEGIN:");
+                    Console.WriteLine("--------------");
+
+                    if (coin == 0) // Hero goes first
+                    {
+                        Console.WriteLine("Hero goes first");
+                        newFight.HeroTurn(hero, chosenMonster, newFight);
+                    }
+                    else if (coin == 1) // Monster goes first
+                    {
+                        Console.WriteLine("Monster goes first");
+                        newFight.MonsterTurn(hero, chosenMonster, newFight);
+                    }
                 }
-                else if (coin == 1) // Monster goes first
+                else // if no monsters are avilable, Hero has cleared the level
                 {
-                    Console.WriteLine("Monster goes first");
-                    newFight.MonsterTurn(hero, chosenMonster, newFight);
+                    Console.WriteLine("AWESOME JOB! Level Cleared!");
+                    return;
                 }
-            } 
-            else // if no monsters are avilable, Hero has cleared the level
+            }
+            else
             {
-                Console.WriteLine("AWESOME JOB! Level Cleared!");
-                return;
+                Console.WriteLine("Hero not found.");
             }
         }
 
@@ -495,7 +521,7 @@ namespace OOP_FinalProject
         {
             Console.WriteLine();
             Console.WriteLine("---------------------*********************************-----------------------");
-            Console.WriteLine("**********************---------- STATISTICS ---------************************");
+            Console.WriteLine("**********************------- GAME STATISTICS -------************************");
             Console.WriteLine("---------------------*********************************-----------------------");
             Console.WriteLine();
         }

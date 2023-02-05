@@ -142,6 +142,14 @@ namespace OOP_FinalProject
             Inventory.EquippedArmor = armor;
         }
 
+        public Hero(int id, string name)
+        {
+            _heroId = id;
+            SetName(name);
+            OriginalHealth = 100;
+            CurrentHealth = 100;
+        }
+        
         public Hero(int id, string name, int defense, int strength)
         {
             _heroId = id;
