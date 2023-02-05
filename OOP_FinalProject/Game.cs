@@ -26,9 +26,9 @@ namespace OOP_FinalProject
         public static int CreateHero(string name)
         {
             Random rand = new Random();
-            //generate strength and defence values between 50-100
-            int defense = rand.Next(1, 11);
-            int strength = rand.Next(1, 11);
+            //generate strength and defence values between 1 - 20
+            int defense = rand.Next(1, 21);
+            int strength = rand.Next(1, 21);
 
             Hero newHero = new Hero(_heroIdCounter, name, defense, strength);
             Heroes.Add(newHero);
@@ -134,9 +134,9 @@ namespace OOP_FinalProject
             // create 'count' monster objects and store to list
             for (int i = 0; i < count; i++)
             {
-                //generate strength and defence values between 50-100
-                int defense = rand.Next(1, 11);
-                int strength = rand.Next(1, 11);
+                //generate strength and defence values between 1 - 20
+                int defense = rand.Next(1, 31);
+                int strength = rand.Next(1, 31);
 
                 Monster randomMonster = new Monster(_monsterIdCounter, $"Monster{i + 1}", defense, strength);
                 Monsters.Add(randomMonster);
@@ -147,50 +147,42 @@ namespace OOP_FinalProject
         // create specific number of weapons with random values for power
         public static void CreateWeapons(int count)
         {
-            Random rand = new Random();
-            // create a random index list to ensure only unique power values for weapons are created
-            List<int> randomIndexList = new List<int>();
-            // create 'count' weapon objects and store to list
-            while(Weapons.Count < count)
+            Dictionary<string, int> weapons = new Dictionary<string, int>()
             {
-                //returns random number between 1-20
-                int power = rand.Next(1, 11);                
+                {"Knife", 2 },
+                {"Grenade", 10 },
+                {"Crossbow", 8 },
+                {"Hammer", 4 },
+                {"Dual Pistol", 9 }
+            };
 
-                // if power value was already generated dont create a weapon with that power
-                if (!randomIndexList.Contains(power))
-                {
-                    // add random value to index list
-                    randomIndexList.Add(power);
-
-                    Weapon randomWeapon = new Weapon(_weaponIdCounter, $"Weapon{Weapons.Count + 1}", power);                
-                    Weapons.Add(randomWeapon);
-                    _weaponIdCounter++;
-                }
+            // create weapon objects and store to list
+            foreach (KeyValuePair<string, int> weapon in weapons)
+            {
+                Weapon newWeapon = new Weapon(_weaponIdCounter, weapon.Key, weapon.Value);
+                Weapons.Add(newWeapon);
+                _weaponIdCounter++;
             }
         }
         
         // create specific number of armor with random values for power
         public static void CreateArmor(int count)
         {
-            Random rand = new Random();
-            // create a random index list to ensure only unique power values for armor are created
-            List<int> randomIndexList = new List<int>();
-            // create 'count' armor objects and store to list
-            while(ArmorList.Count < count)
+            Dictionary<string, int> armorItems = new Dictionary<string, int>()
             {
-                //returns random number between 1-10
-                int power = rand.Next(1, 11);                
+                {"Shield", 10 },
+                {"Helmet", 1 },
+                {"Arm Guard", 3 },
+                {"Magic Cloak", 9 },
+                {"Chest Armor", 7 }
+            };
 
-                // if power value was already generated dont create armor with that power
-                if (!randomIndexList.Contains(power))
-                {
-                    // add random value to index list
-                    randomIndexList.Add(power);
-
-                    Armor randomArmor = new Armor(_armorIdCounter, $"Armor{ArmorList.Count + 1}", power);
-                    ArmorList.Add(randomArmor);
-                    _armorIdCounter++;
-                }
+            // create weapon objects and store to list
+            foreach (KeyValuePair<string, int> armorItem in armorItems)
+            {
+                Armor newArmor = new Armor(_armorIdCounter, armorItem.Key, armorItem.Value);
+                ArmorList.Add(newArmor);
+                _armorIdCounter++;
             }
         }
 
@@ -209,11 +201,8 @@ namespace OOP_FinalProject
         {
             foreach (Monster m in Monsters)
             {
-                if (m.IsDefeated)
-                {
-                    m.IsDefeated = false;
-                    m.CurrentHealth = m.OriginalHealth;
-                }
+                m.IsDefeated = false;
+                m.CurrentHealth = m.OriginalHealth;
             }
         }
 
@@ -462,8 +451,6 @@ namespace OOP_FinalProject
                 hero.Inventory.GetInventory();
                 chosenMonster.GetStats();
                 Console.WriteLine();
-                //Console.WriteLine($"{hero.Inventory.EquippedWeapon.WeaponName}: Power - {hero.Inventory.EquippedWeapon.Power}");
-                //Console.WriteLine($"{hero.Inventory.EquippedArmor.ArmorName}: Power - {hero.Inventory.EquippedArmor.Power}");
 
                 // initialize new Fight object
                 Fight newFight = new Fight(_fightIdCounter, hero, chosenMonster);
@@ -526,13 +513,18 @@ namespace OOP_FinalProject
         {
             Console.WriteLine();
             Console.WriteLine("---------------------*********************************-----------------------");
-            Console.WriteLine("**********************------------ FIGHT! -----------**********************");
+            Console.WriteLine("**********************------------- FIGHT! ------------**********************");
             Console.WriteLine("---------------------*********************************-----------------------");
             Console.WriteLine();
         }
 
         public static void Menu2()
         {
+            Console.WriteLine();
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine("*********************------------ MAIN MENU -----------**********************");
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("Choose an option:");
             Console.WriteLine("1. Display Statistics");

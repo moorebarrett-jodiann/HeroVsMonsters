@@ -58,12 +58,20 @@ namespace OOP_FinalProject
             }
         }
 
-        // current health will not have validation as it can have a negative value calculated
-        // during a fight
         public int CurrentHealth
         {
             get { return _currentHealth; }
-            set { _currentHealth = value; }
+            set
+            {
+                if (value < 0 || value > OriginalHealth)
+                {
+                    throw new ArgumentException("Current health cannot exceed Original Health or be a negative value");
+                }
+                else
+                {
+                    _currentHealth = value;
+                }
+            }
         }
         
         public int BaseStrength
@@ -138,8 +146,8 @@ namespace OOP_FinalProject
         {
             _heroId = id;
             SetName(name);
-            OriginalHealth = 20;
-            CurrentHealth = 20;
+            OriginalHealth = 100;
+            CurrentHealth = 100;
             BaseDefense = defense;
             BaseStrength = strength;
         }
@@ -150,8 +158,8 @@ namespace OOP_FinalProject
             SetName(name);
             Inventory.EquippedWeapon = weapon;
             Inventory.EquippedArmor = armor;
-            OriginalHealth = 20;
-            CurrentHealth = 20;
+            OriginalHealth = 100;
+            CurrentHealth = 100;
             BaseDefense = defense;
             BaseStrength = strength;
         }
