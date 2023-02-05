@@ -39,9 +39,9 @@ namespace OOP_FinalProject
             if (hero != null)
             {
                 Random rand = new Random();
-                //generate strength and defence values between 5 - 20
-                int defense = rand.Next(5, 21);
-                int strength = rand.Next(5, 21);
+                //generate strength and defence values between 5 - 15
+                int defense = rand.Next(5, 16);
+                int strength = rand.Next(5, 16);
 
                 hero.BaseDefense = defense;
                 hero.BaseStrength = strength;
@@ -421,6 +421,15 @@ namespace OOP_FinalProject
                         Console.WriteLine("\nThanks for playing!");
                         looping = false;
                         break;
+                    case "5":
+                        Heroes.Clear();
+                        Monsters.Clear();
+                        Weapons.Clear();
+                        ArmorList.Clear();
+                        HeroInventory.Clear();
+                        Fights.Clear();
+                        Start();
+                        break;
                     default:
                         Console.WriteLine("Invalid input. Please try again.");
                         break;
@@ -565,6 +574,10 @@ namespace OOP_FinalProject
             Console.WriteLine("2. Manage Inventory");
             Console.WriteLine("3. Fight");
             Console.WriteLine("4. Exit");
+            if(Fights.Count > 0)
+            {
+                Console.WriteLine("5. Reset Game");
+            }
         }
     }
 }

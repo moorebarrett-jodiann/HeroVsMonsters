@@ -41,8 +41,8 @@ namespace OOP_FinalProject
         /***
          * Damage Equation:
          * 
-         * Original equation was throwing off damage results. Did some research and found a solid solution to account for possible negative values
-         * and values that exceed original health
+         * Original equation was throwing off damage results. Did some research and found a solid solution 
+         * to account for possible negative values and values that exceed original health
          * 
          * if (attack >= defense) {
          *      damage = attack * 2 - defense;
@@ -66,11 +66,15 @@ namespace OOP_FinalProject
             if (attack >= defense)
             {
                 damage = (((attack * 2) + weaponPower) - defense);
+                if (damage == 0)
+                    damage = 1;
                 Console.WriteLine($"Damage: {damage}");
             }
             else
             {
                 damage = (((attack * attack) + weaponPower) / defense);
+                if (damage == 0)
+                    damage = 1;
                 Console.WriteLine($"Damage: {damage}");
             }
             
@@ -115,11 +119,15 @@ namespace OOP_FinalProject
             if (attack >= defense)
             {
                 damage = (((attack * 2) + armorPower) - defense);
+                if (damage == 0)
+                    damage = 1; 
                 Console.WriteLine($"Damage: {damage}");
             }
             else
             {
                 damage = (((attack * attack) + armorPower) / defense);
+                if (damage == 0)
+                    damage = 1;
                 Console.WriteLine($"Damage: {damage}");
             }
 
