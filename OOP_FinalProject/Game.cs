@@ -475,7 +475,7 @@ namespace OOP_FinalProject
                     Console.WriteLine(" Battle Info:");
                     Console.WriteLine("--------------");
                     hero.GetStats();
-                    Console.WriteLine("Weapn and Armor:");
+                    Console.WriteLine("Weapon and Armor:");
                     hero.Inventory.GetInventory();
                     chosenMonster.GetStats();
                     Console.WriteLine();
