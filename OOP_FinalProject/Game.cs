@@ -10,6 +10,7 @@ namespace OOP_FinalProject
     public static class Game
     {
         public static HashSet<Hero> Heroes = new HashSet<Hero>();
+        public static Hero globalHero = null;
         public static HashSet<Monster> Monsters = new HashSet<Monster>();
         public static List<Weapon> Weapons = new List<Weapon>();
         public static List<Armor> ArmorList = new List<Armor>();
@@ -23,62 +24,19 @@ namespace OOP_FinalProject
         private static int _inventoryIdCounter = 1;
         private static int _fightIdCounter = 1;
 
-        public static int InitHero(string name)
+        // method to initialize Hero
+        public static void InitHero(string name)
         {
-            Hero newHero = new Hero(_heroIdCounter, name);
+            Random rand = new Random();
+
+            //generate strength and defense values between 1 - 10
+            int defense = rand.Next(1, 11);
+            int strength = rand.Next(1, 11);
+
+            Hero newHero = new Hero(_heroIdCounter, name, defense, strength);
             Heroes.Add(newHero);
+            globalHero = newHero;
             _heroIdCounter++;
-
-            return newHero.HeroId;
-        }
-
-        public static void UpdateHeroStats(int id)
-        {
-            Hero? hero = GetHero(id);
-
-            if (hero != null)
-            {
-                Random rand = new Random();
-                //generate strength and defense values between 5 - 15
-                int defense = rand.Next(5, 16);
-                int strength = rand.Next(5, 16);
-
-                hero.BaseDefense = defense;
-                hero.BaseStrength = strength;
-            } else
-            {
-                Console.WriteLine("Hero not found.");
-            }
-        }
-
-        public static Hero? GetHero(int id)
-        {
-            Hero hero = null;
-            foreach (Hero h in Heroes)
-            {
-                if (h.HeroId == id)
-                {
-                    hero = h;
-                    break;
-                }
-            }
-
-            return hero;
-        }
-        
-        public static Monster? GetMonster(int id)
-        {
-            Monster monster = null;
-            foreach (Monster m in Monsters)
-            {
-                if (m.MonsterId == id)
-                {
-                    monster = m;
-                    break;
-                }
-            }
-
-            return monster;
         }
         
         public static Weapon? GetWeapon(int id)
@@ -125,32 +83,42 @@ namespace OOP_FinalProject
 
             return inventory;
         }
-        
-        public static Fight? GetFight(int id)
-        {
-            Fight fight = null;
-            foreach (Fight f in Fights)
-            {
-                if (f.FightId == id)
-                {
-                    fight = f;
-                    break;
-                }
-            }
 
-            return fight;
-        }
-
-        public static void CreateMonsters(int count)
+        // create 5 monsters based on the current strength, health and defense level of hero
+        public static void CreateMonsters(int level = 0)
         {
             Random rand = new Random();
+            Monsters.Clear();
 
-            // create 'count' monster objects and store to list
-            for (int i = 0; i < count; i++)
+            int defense = 0;
+            int strength = 0;
+
+            for (int i = 0; i < 5; i++)
             {
-                //generate strength and defense values between 1 - 20
-                int defense = rand.Next(1, 21);
-                int strength = rand.Next(1, 21);
+                if(level == 0)
+                {
+                    //generate strength and defense values between 1 - 15
+                    defense = rand.Next(1, 15);
+                    strength = rand.Next(1, 15);
+                } 
+                else if (level == 1)
+                {
+                    //generate strength and defense values between 3 - 20
+                    defense = rand.Next(3, 20);
+                    strength = rand.Next(3, 20);
+                } 
+                else if (level == 2)
+                {
+                    //generate strength and defense values between 5 - 22
+                    defense = rand.Next(5, 22);
+                    strength = rand.Next(5, 22);
+                } 
+                else if (level == 3)
+                {
+                    //generate strength and defense values between 10 - 30
+                    defense = rand.Next(10, 31);
+                    strength = rand.Next(10, 31);
+                }                
 
                 Monster randomMonster = new Monster(_monsterIdCounter, $"Monster {i + 1}", defense, strength);
                 Monsters.Add(randomMonster);
@@ -158,7 +126,7 @@ namespace OOP_FinalProject
             }
         }
         
-        // create specific number of weapons with random values for power
+        // create 5 weapons with varying values for power
         public static void CreateWeapons(int count)
         {
             Dictionary<string, int> weapons = new Dictionary<string, int>()
@@ -179,7 +147,7 @@ namespace OOP_FinalProject
             }
         }
         
-        // create specific number of armor with random values for power
+        // create 5 armor items with varying values for power
         public static void CreateArmor(int count)
         {
             Dictionary<string, int> armorItems = new Dictionary<string, int>()
@@ -200,6 +168,7 @@ namespace OOP_FinalProject
             }
         }
 
+        // method to initialize inventory
         public static void InitInventory(Hero hero)
         {
             if(hero != null)
@@ -211,6 +180,7 @@ namespace OOP_FinalProject
             }
         }
 
+        // method to revive all previously defeated monsters if hero loses a single fight 
         public static void ReviveMonsters()
         {
             foreach (Monster m in Monsters)
@@ -220,14 +190,14 @@ namespace OOP_FinalProject
             }
         }
 
-        public static void ManageInventory(int heroId)
+        // method to manage hero weapon and armor
+        public static void ManageInventory()
         {
-            Hero? hero = GetHero(heroId);
 
-            if (hero != null)
+            if (globalHero != null)
             {
-                Weapon? weapon = hero.Inventory.EquippedWeapon;
-                Armor? armor = hero.Inventory.EquippedArmor;
+                Weapon? weapon = globalHero.Inventory.EquippedWeapon;
+                Armor? armor = globalHero.Inventory.EquippedArmor;
 
                 if (armor == null)
                 {
@@ -261,11 +231,11 @@ namespace OOP_FinalProject
 
                 if (equipOption == 1)
                 {
-                    UpdateWeapon(hero);
+                    UpdateWeapon(globalHero);
                 }
                 else if (equipOption == 2)
                 {
-                    UpdateArmor(hero);
+                    UpdateArmor(globalHero);
                 }
                 else if (equipOption == 3)
                 {
@@ -278,6 +248,7 @@ namespace OOP_FinalProject
             }
         }
 
+        // method to update hero armor
         public static void UpdateWeapon(Hero hero)
         {
             Console.WriteLine();
@@ -303,6 +274,7 @@ namespace OOP_FinalProject
             Console.WriteLine($"Weapon successfully updated");
         }
         
+        // method to update hero armor
         public static void UpdateArmor(Hero hero)
         {
             Console.WriteLine();
@@ -328,6 +300,7 @@ namespace OOP_FinalProject
             Console.WriteLine($"Armor successfully updated");
         }
 
+        // method to show game statistics
         public static void ShowStatistics()
         {
             int totalFights = Fights.Count;
@@ -351,6 +324,35 @@ namespace OOP_FinalProject
             Console.WriteLine($"Fights Lost: {fightsLost}");
         }
 
+        //method to boost Hero Stats and pay for boost with coins
+        public static void BoostHero(Hero hero, string stat, int amount, int cost)
+        {
+            if(hero != null)
+            {
+                if(stat.ToLower() == "health")
+                {
+                    hero.OriginalHealth += amount;
+                    hero.CurrentHealth = hero.OriginalHealth;
+                    Console.WriteLine($"Health successfully updated");
+                }
+                else if(stat.ToLower() == "defense")
+                {
+                    hero.BaseDefense += amount;
+                    Console.WriteLine($"Defense successfully updated");
+                } 
+                else if(stat.ToLower() == "strength")
+                {
+                    hero.BaseStrength += amount;
+                    Console.WriteLine($"Strength successfully updated");
+                }
+
+                hero.Coins -= cost;
+            } else
+            {
+                Console.WriteLine("Hero not found.");
+            }
+        }
+
         public static void Start()
         {
             Console.BackgroundColor = ConsoleColor.DarkBlue;
@@ -360,13 +362,13 @@ namespace OOP_FinalProject
             WelcomeHeader();
 
             string heroName = GetUserInput();
-            int newHero = InitHero(heroName);
+            InitHero(heroName);
 
             // initialize a list of monsters, weapons and armor
-            CreateMonsters(5);
+            CreateMonsters();
             CreateWeapons(5);
             CreateArmor(5);
-            InitInventory(GetHero(newHero));
+            InitInventory(globalHero);
 
             bool looping = true;
             while (looping)
@@ -384,7 +386,7 @@ namespace OOP_FinalProject
                         InventoryHeader();
                         try
                         {
-                            ManageInventory(newHero);
+                            ManageInventory();
                         }
                         catch (Exception ex)
                         {
@@ -392,43 +394,72 @@ namespace OOP_FinalProject
                         }                        
                         break;
                     case "3":
-                        try
+                        if (globalHero != null)
                         {
-                            Hero? hero = GetHero(newHero);
-
-                            if (hero != null)
+                            if(globalHero.Inventory.EquippedWeapon == null || globalHero.Inventory.EquippedArmor == null)
                             {
-                                if(hero.Inventory.EquippedWeapon == null || hero.Inventory.EquippedArmor == null)
-                                {
-                                    Console.WriteLine($"\nSorry {hero.HeroName}! :-( You must have a Weapon and Armor to Fight.");
-                                } else
-                                {
-                                    FightHeader();
-                                    CoinToss(hero);                              
-                                }
-                            }
-                            else
+                                Console.WriteLine($"\nSorry {globalHero.HeroName}! :-( You must have a Weapon and Armor to Fight.");
+                            } else
                             {
-                                Console.WriteLine("Hero Player not Found.");
+                                FightHeader();
+                                CoinToss(globalHero);                              
                             }
-                        } 
-                        catch (Exception ex) 
+                        }
+                        else
                         {
-                            Console.WriteLine(ex.Message);
+                            Console.WriteLine("Hero Player not Found.");
                         }
                         break;
                     case "4":
-                        Console.WriteLine("\nThanks for playing!");
-                        looping = false;
+                        BoostStatsHeader();
+                        if (globalHero != null)
+                        {
+                            if(globalHero.Coins > 0)
+                            {
+                                int coins = globalHero.Coins;
+                                if(coins >= 10 && coins < 20)
+                                {
+                                    BoostStats(globalHero, 1);                                        
+                                } 
+                                else if (coins >= 20 && coins < 30)
+                                {
+                                    BoostStats(globalHero, 2);
+                                } 
+                                else if(coins >= 30 )
+                                {
+                                    BoostStats(globalHero, 3);                                        
+                                } else
+                                {
+                                    Console.WriteLine($"\nSorry {globalHero.HeroName}! :-( You do not have enough coins to boost your stats.");
+                                }
+                            } else
+                            {
+                                Console.WriteLine($"\nSorry {globalHero.HeroName}! :-( You do not have enough coins to boost your stats.");
+                            }
+                        } else
+                        {
+                            Console.WriteLine("Hero Player not Found.");
+                        }
                         break;
                     case "5":
+                        if(globalHero != null)
+                        {
+                            globalHero.Inventory = null;
+                            globalHero.Coins = 0;
+                            globalHero.ResetFights();
+                        }
                         Heroes.Clear();
                         Monsters.Clear();
                         Weapons.Clear();
                         ArmorList.Clear();
                         HeroInventory.Clear();
                         Fights.Clear();
+                        globalHero = null;
                         Start();
+                        break;
+                    case "6":
+                        Console.WriteLine("\nThanks for playing!");
+                        looping = false;
                         break;
                     default:
                         Console.WriteLine("Invalid input. Please try again.");
@@ -442,8 +473,6 @@ namespace OOP_FinalProject
         {
             if (hero != null)
             {
-                UpdateHeroStats(hero.HeroId);
-
                 Random random = new Random();
                 int coin = random.Next(2);
                 bool monstersAvailable = false;
@@ -474,9 +503,12 @@ namespace OOP_FinalProject
                     // display hero and monster stats before fight
                     Console.WriteLine(" Battle Info:");
                     Console.WriteLine("--------------");
+                    Console.WriteLine("****** Hero Stats ******");
                     hero.GetStats();
+                    Console.WriteLine($"Coins: {globalHero.Coins}");
                     Console.WriteLine("****** Weapon and Armor ******");
                     hero.Inventory.GetInventory();
+                    Console.WriteLine("****** Monster Stats ******");
                     chosenMonster.GetStats();
                     Console.WriteLine();
 
@@ -554,6 +586,148 @@ namespace OOP_FinalProject
             Console.WriteLine();
         }
         
+        public static void BoostStatsHeader()
+        {
+            Console.WriteLine();
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine("**********************--------- BOOST STATS ---------************************");
+            Console.WriteLine("---------------------*********************************-----------------------");
+            Console.WriteLine();
+        }
+        
+        public static void BoostStats(Hero hero, int level)
+        {
+            if(level == 1)
+            {
+                Console.WriteLine("Congratulations! You've earned enough coins for a Level 1 Boost.");
+                Console.WriteLine();
+                Console.WriteLine("****** Hero Stats ******");
+                hero.GetStats();
+                Console.WriteLine($"Coins Remaining: {hero.Coins}");
+                Console.WriteLine();
+                Console.WriteLine("Choose an option:");
+                Console.WriteLine("1. 20 Coins - Boost Original Health (+25)");
+                Console.WriteLine("2. 15 Coins - Boost Defense (+5)");
+                Console.WriteLine("3. 15 Coins - Boost Strength (+5)");
+                Console.WriteLine("4. Back to Main Menu");
+
+                int boostOption = Int32.Parse(GetUserInput());
+
+                while (boostOption != 1 && boostOption != 2 && boostOption != 3 && boostOption != 4)
+                {
+                    Console.WriteLine("Invalid Option Selected");
+                    BoostStats(hero,1);
+                    boostOption = Int32.Parse(GetUserInput());
+                }
+
+                if (boostOption == 1)
+                {
+                    BoostHero(hero, "health", 25, 20);
+                }
+                else if (boostOption == 2)
+                {
+                    BoostHero(hero, "defense", 5, 15);
+                }
+                else if (boostOption == 3)
+                {
+                    BoostHero(hero, "strength", 5, 15);
+                }
+                else if (boostOption == 4)
+                {
+                    return;
+                }
+
+                // boost monsters' strengths and defenses
+                CreateMonsters(1);
+            } 
+            else if (level == 2)
+            {
+                Console.WriteLine("Congratulations! You've earned enough coins for a Level 2 Boost.");
+                Console.WriteLine();
+                Console.WriteLine("****** Hero Stats ******");
+                hero.GetStats();
+                Console.WriteLine($"Coins Remaining: {hero.Coins}");
+                Console.WriteLine();
+                Console.WriteLine("Choose an option:");
+                Console.WriteLine("1. 25 Coins - Boost Original Health (+30)");
+                Console.WriteLine("2. 20 Coins - Boost Defense (+10)");
+                Console.WriteLine("3. 20 Coins - Boost Strength (+10)");
+                Console.WriteLine("4. Back to Main Menu");
+
+                int boostOption = Int32.Parse(GetUserInput());
+
+                while (boostOption != 1 && boostOption != 2 && boostOption != 3 && boostOption != 4)
+                {
+                    Console.WriteLine("Invalid Option Selected");
+                    BoostStats(hero, 2);
+                    boostOption = Int32.Parse(GetUserInput());
+                }
+
+                if (boostOption == 1)
+                {
+                    BoostHero(hero, "health", 30, 25);
+                }
+                else if (boostOption == 2)
+                {
+                    BoostHero(hero, "defense", 10, 20);
+                }
+                else if (boostOption == 3)
+                {
+                    BoostHero(hero, "strength", 10, 20);
+                }
+                else if (boostOption == 4)
+                {
+                    return;
+                }
+
+                // boost monsters' strengths and defenses
+                CreateMonsters(2);
+            } 
+            else if (level == 3)
+            {
+                Console.WriteLine("Congratulations! You've earned enough coins for a Level 3 Boost.");
+                Console.WriteLine();
+                Console.WriteLine("****** Hero Stats ******");
+                hero.GetStats();
+                Console.WriteLine($"Coins Remaining: {hero.Coins}");
+                Console.WriteLine();
+                Console.WriteLine("Choose an option:");
+                Console.WriteLine("1. 30 Coins - Boost Original Health (+40)");
+                Console.WriteLine("2. 25 Coins - Boost Defense (+15)");
+                Console.WriteLine("3. 25 Coins - Boost Strength (+15)");
+                Console.WriteLine("4. Back to Main Menu");
+
+                int boostOption = Int32.Parse(GetUserInput());
+
+                while (boostOption != 1 && boostOption != 2 && boostOption != 3 && boostOption != 4)
+                {
+                    Console.WriteLine("Invalid Option Selected");
+                    BoostStats(hero, 3);
+                    boostOption = Int32.Parse(GetUserInput());
+                }
+
+                if (boostOption == 1)
+                {
+                    BoostHero(hero, "health", 40, 30);
+                }
+                else if (boostOption == 2)
+                {
+                    BoostHero(hero, "defense", 15, 25);
+                }
+                else if (boostOption == 3)
+                {
+                    BoostHero(hero, "strength", 15, 25);
+                }
+                else if (boostOption == 4)
+                {
+                    return;
+                }
+
+                // boost monsters' strengths and defenses
+                CreateMonsters(3);
+            }
+        }
+        
         public static void ManageInventoryMenu()
         {
             Console.WriteLine();
@@ -574,11 +748,9 @@ namespace OOP_FinalProject
             Console.WriteLine("1. Display Statistics");
             Console.WriteLine("2. Manage Inventory");
             Console.WriteLine("3. Fight");
-            Console.WriteLine("4. Exit");
-            if(Fights.Count > 0)
-            {
-                Console.WriteLine("5. Reset Game");
-            }
+            Console.WriteLine("4. Boost Stats");
+            Console.WriteLine("5. Reset Game");
+            Console.WriteLine("6. Exit");
         }
     }
 }

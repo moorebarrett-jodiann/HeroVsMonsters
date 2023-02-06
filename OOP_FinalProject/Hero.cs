@@ -12,12 +12,13 @@ namespace OOP_FinalProject
         private string _heroName;
 
         // inventory object to hold hero equipped weapon and equipped armor
-        private Inventory _inventory;
+        private Inventory? _inventory;
 
         private int _originalHealth;
         private int _currentHealth;
         private int _baseStrength;
         private int _baseDefense;
+        private int _coins;
 
         private HashSet<Fight> _fights = new HashSet<Fight>();
 
@@ -106,7 +107,7 @@ namespace OOP_FinalProject
             }
         }
         
-        public Inventory Inventory
+        public Inventory? Inventory
         {
             get { return _inventory; }
             set { _inventory = value; }
@@ -117,9 +118,20 @@ namespace OOP_FinalProject
             return _fights.ToHashSet();
         }
         
+        public void ResetFights()
+        {
+            _fights.Clear();
+        }
+        
         public void AddFightHistory(Fight fight)
         {
             _fights.Add(fight);
+        }
+
+        public int Coins
+        {
+            get { return _coins; }
+            set { _coins = value; }
         }
 
         // Displays the Hero’s Name, BaseStrength, BaseDefence, OriginalHealth, and CurrentHealth.
@@ -148,6 +160,7 @@ namespace OOP_FinalProject
             SetName(name);
             OriginalHealth = 100;
             CurrentHealth = 100;
+            Coins = 0;
         }
         
         public Hero(int id, string name, int defense, int strength)
@@ -158,6 +171,7 @@ namespace OOP_FinalProject
             CurrentHealth = 100;
             BaseDefense = defense;
             BaseStrength = strength;
+            Coins = 0;
         }
                 
         public Hero(int id, string name, Weapon weapon, Armor armor, int defense, int strength)
@@ -170,6 +184,7 @@ namespace OOP_FinalProject
             CurrentHealth = 100;
             BaseDefense = defense;
             BaseStrength = strength;
+            Coins = 0;
         }
     }
 }

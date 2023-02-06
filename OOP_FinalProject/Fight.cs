@@ -165,10 +165,12 @@ namespace OOP_FinalProject
             // set Fight flag to 'HeroWins = true'
             // add fight to hero fight Hashset
             Console.WriteLine("\nHero Wins!");
+            Console.WriteLine("Coins (+2)");
             hero.CurrentHealth = hero.OriginalHealth;
             monster.IsDefeated = true;
             HeroWins = true;
             hero.AddFightHistory(fight);
+            hero.Coins += 2;
         }
 
         /***
