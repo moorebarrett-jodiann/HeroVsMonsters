@@ -41,8 +41,8 @@ namespace OOP_FinalProject
         /***
          * Damage Equation:
          * 
-         * Original equation was throwing off damage results. Did some research and found a solution 
-         * to account for possible negative values and values that exceed original health
+         * Original equation was improved upon to handle fluctuation in damage value as fight proceeded. 
+         * After some research, solution was found to account for possible negative values and values that exceed original health
          * 
          * if (attack >= defense) {
          *      damage = attack * 2 - defense;
