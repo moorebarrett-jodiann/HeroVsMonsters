@@ -39,6 +39,8 @@ namespace OOP_FinalProject
         }
 
         /***
+         * (Discussed and Approved by Instructor)
+         * 
          * Damage Equation:
          * 
          * Original equation was improved upon to handle fluctuation in damage value as fight proceeded. 

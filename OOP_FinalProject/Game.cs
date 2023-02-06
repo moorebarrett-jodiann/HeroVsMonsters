@@ -353,6 +353,7 @@ namespace OOP_FinalProject
             }
         }
 
+        // main program
         public static void Start()
         {
             Console.BackgroundColor = ConsoleColor.DarkBlue;
