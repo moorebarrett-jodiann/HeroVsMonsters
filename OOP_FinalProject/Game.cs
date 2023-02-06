@@ -97,27 +97,27 @@ namespace OOP_FinalProject
             {
                 if(level == 0)
                 {
-                    //generate strength and defense values between 1 - 15
-                    defense = rand.Next(1, 15);
-                    strength = rand.Next(1, 15);
+                    //generate strength and defense values between 1 - 13
+                    defense = rand.Next(1, 14);
+                    strength = rand.Next(1, 14);
                 } 
                 else if (level == 1)
                 {
-                    //generate strength and defense values between 3 - 20
-                    defense = rand.Next(3, 20);
-                    strength = rand.Next(3, 20);
+                    //generate strength and defense values between 5 - 16
+                    defense = rand.Next(5, 17);
+                    strength = rand.Next(5, 17);
                 } 
                 else if (level == 2)
                 {
-                    //generate strength and defense values between 5 - 22
-                    defense = rand.Next(5, 22);
-                    strength = rand.Next(5, 22);
+                    //generate strength and defense values between 5 - 20
+                    defense = rand.Next(5, 21);
+                    strength = rand.Next(5, 21);
                 } 
                 else if (level == 3)
                 {
-                    //generate strength and defense values between 10 - 30
-                    defense = rand.Next(10, 31);
-                    strength = rand.Next(10, 31);
+                    //generate strength and defense values between 7 - 25
+                    defense = rand.Next(7, 26);
+                    strength = rand.Next(7, 26);
                 }                
 
                 Monster randomMonster = new Monster(_monsterIdCounter, $"Monster {i + 1}", defense, strength);
