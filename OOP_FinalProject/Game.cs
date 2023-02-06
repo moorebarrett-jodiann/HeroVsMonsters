@@ -39,7 +39,7 @@ namespace OOP_FinalProject
             if (hero != null)
             {
                 Random rand = new Random();
-                //generate strength and defence values between 5 - 15
+                //generate strength and defense values between 5 - 15
                 int defense = rand.Next(5, 16);
                 int strength = rand.Next(5, 16);
 
@@ -148,11 +148,11 @@ namespace OOP_FinalProject
             // create 'count' monster objects and store to list
             for (int i = 0; i < count; i++)
             {
-                //generate strength and defence values between 1 - 20
+                //generate strength and defense values between 1 - 20
                 int defense = rand.Next(1, 21);
                 int strength = rand.Next(1, 21);
 
-                Monster randomMonster = new Monster(_monsterIdCounter, $"Monster{i + 1}", defense, strength);
+                Monster randomMonster = new Monster(_monsterIdCounter, $"Monster {i + 1}", defense, strength);
                 Monsters.Add(randomMonster);
                 _monsterIdCounter++;
             }
@@ -475,6 +475,7 @@ namespace OOP_FinalProject
                     Console.WriteLine(" Battle Info:");
                     Console.WriteLine("--------------");
                     hero.GetStats();
+                    Console.WriteLine("Weapn and Armor:");
                     hero.Inventory.GetInventory();
                     chosenMonster.GetStats();
                     Console.WriteLine();

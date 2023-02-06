@@ -102,9 +102,10 @@ namespace OOP_FinalProject
             }
         }
 
+        // Displays the Monster’s Name, Strength, Defence, OriginalHealth, and CurrentHealth.
         public string GetStats()
         {
-            string stats = $"Monster's Name: {MonsterName}, BaseStrength: {Strength}, BaseDefence: {Defense}, OriginalHealth: {OriginalHealth}, and CurrentHealth: {CurrentHealth}";
+            string stats = $"Monster's Name: {MonsterName}, Strength: {Strength}, Defence: {Defense}, OriginalHealth: {OriginalHealth}, and CurrentHealth: {CurrentHealth}";
             Console.WriteLine(stats);
             return stats;
         }

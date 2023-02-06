@@ -41,7 +41,7 @@ namespace OOP_FinalProject
         /***
          * Damage Equation:
          * 
-         * Original equation was throwing off damage results. Did some research and found a solid solution 
+         * Original equation was throwing off damage results. Did some research and found a solution 
          * to account for possible negative values and values that exceed original health
          * 
          * if (attack >= defense) {
@@ -80,15 +80,14 @@ namespace OOP_FinalProject
             
             newHealth = monsterHealth - damage;
 
+            // update monster health
             if (newHealth > 0)
             {
-                // update monster health
                 monster.CurrentHealth = monsterHealth - damage;
                 Console.WriteLine($"Monster current health: {monster.CurrentHealth}");
             }
             else
             {
-                // update monster health
                 monster.CurrentHealth = 0;
                 Console.WriteLine($"Monster current health: 0");
             }
@@ -133,15 +132,14 @@ namespace OOP_FinalProject
 
             newHealth = heroHealth - damage;
 
+            // update hero health
             if(newHealth > 0)
             {
-                // update hero health
                 hero.CurrentHealth = heroHealth - damage;
                 Console.WriteLine($"Hero current health: {hero.CurrentHealth}");
             } 
             else
             {
-                // update hero health
                 hero.CurrentHealth = 0;
                 Console.WriteLine($"Hero current health: 0");
             }
