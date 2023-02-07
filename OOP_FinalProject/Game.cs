@@ -97,27 +97,27 @@ namespace OOP_FinalProject
             {
                 if(level == 0)
                 {
-                    //generate strength and defense values between 1 - 15
-                    defense = rand.Next(1, 16);
-                    strength = rand.Next(1, 16);
+                    //generate strength and defense values between 1 - 12
+                    defense = rand.Next(1, 13);
+                    strength = rand.Next(1, 13);
                 } 
                 else if (level == 1)
                 {
-                    //generate strength and defense values between 5 - 25
-                    defense = rand.Next(5, 26);
-                    strength = rand.Next(5, 26);
+                    //generate strength and defense values between 3 - 18
+                    defense = rand.Next(3, 19);
+                    strength = rand.Next(5, 19);
                 } 
                 else if (level == 2)
                 {
-                    //generate strength and defense values between 10 - 25
-                    defense = rand.Next(10, 36);
-                    strength = rand.Next(10, 36);
+                    //generate strength and defense values between 5 - 22
+                    defense = rand.Next(5, 23);
+                    strength = rand.Next(5, 23);
                 } 
                 else if (level == 3)
                 {
-                    //generate strength and defense values between 15 - 45
-                    defense = rand.Next(15, 46);
-                    strength = rand.Next(15, 46);
+                    //generate strength and defense values between 8 - 25
+                    defense = rand.Next(8, 26);
+                    strength = rand.Next(8, 26);
                 }                
 
                 Monster randomMonster = new Monster(_monsterIdCounter, $"Monster {i + 1}", defense, strength);
@@ -482,6 +482,7 @@ namespace OOP_FinalProject
                 }
 
                 hero.Coins -= cost;
+                globalHero = hero;
             } else
             {
                 Console.WriteLine("Hero not found.");
