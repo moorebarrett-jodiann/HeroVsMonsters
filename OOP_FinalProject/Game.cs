@@ -324,6 +324,140 @@ namespace OOP_FinalProject
             Console.WriteLine($"Fights Lost: {fightsLost}");
         }
 
+        // method to boost hero's stats once they've accumulated enough coins
+        public static void BoostStats(Hero hero, int level)
+        {
+            if (level == 1)
+            {
+                Console.WriteLine("Congratulations! You've earned enough coins for a Level 1 Boost.");
+                Console.WriteLine();
+                Console.WriteLine("****** Hero Stats ******");
+                hero.GetStats();
+                Console.WriteLine($"Coins Remaining: {hero.Coins}");
+                Console.WriteLine();
+                Console.WriteLine("Choose an option:");
+                Console.WriteLine("1. 15 Coins - Boost Original Health (+25)");
+                Console.WriteLine("2. 10 Coins - Boost Defense (+5)");
+                Console.WriteLine("3. 10 Coins - Boost Strength (+5)");
+                Console.WriteLine("4. Back to Main Menu");
+
+                int boostOption = Int32.Parse(GetUserInput());
+
+                while (boostOption != 1 && boostOption != 2 && boostOption != 3 && boostOption != 4)
+                {
+                    Console.WriteLine("Invalid Option Selected");
+                    BoostStats(hero, 1);
+                    boostOption = Int32.Parse(GetUserInput());
+                }
+
+                if (boostOption == 1)
+                {
+                    BoostHero(hero, "health", 25, 15);
+                }
+                else if (boostOption == 2)
+                {
+                    BoostHero(hero, "defense", 5, 10);
+                }
+                else if (boostOption == 3)
+                {
+                    BoostHero(hero, "strength", 5, 10);
+                }
+                else if (boostOption == 4)
+                {
+                    return;
+                }
+
+                // boost monsters' strengths and defenses
+                CreateMonsters(1);
+            }
+            else if (level == 2)
+            {
+                Console.WriteLine("Congratulations! You've earned enough coins for a Level 2 Boost.");
+                Console.WriteLine();
+                Console.WriteLine("****** Hero Stats ******");
+                hero.GetStats();
+                Console.WriteLine($"Coins Remaining: {hero.Coins}");
+                Console.WriteLine();
+                Console.WriteLine("Choose an option:");
+                Console.WriteLine("1. 25 Coins - Boost Original Health (+30)");
+                Console.WriteLine("2. 20 Coins - Boost Defense (+10)");
+                Console.WriteLine("3. 20 Coins - Boost Strength (+10)");
+                Console.WriteLine("4. Back to Main Menu");
+
+                int boostOption = Int32.Parse(GetUserInput());
+
+                while (boostOption != 1 && boostOption != 2 && boostOption != 3 && boostOption != 4)
+                {
+                    Console.WriteLine("Invalid Option Selected");
+                    BoostStats(hero, 2);
+                    boostOption = Int32.Parse(GetUserInput());
+                }
+
+                if (boostOption == 1)
+                {
+                    BoostHero(hero, "health", 30, 25);
+                }
+                else if (boostOption == 2)
+                {
+                    BoostHero(hero, "defense", 10, 20);
+                }
+                else if (boostOption == 3)
+                {
+                    BoostHero(hero, "strength", 10, 20);
+                }
+                else if (boostOption == 4)
+                {
+                    return;
+                }
+
+                // boost monsters' strengths and defenses
+                CreateMonsters(2);
+            }
+            else if (level == 3)
+            {
+                Console.WriteLine("Congratulations! You've earned enough coins for a Level 3 Boost.");
+                Console.WriteLine();
+                Console.WriteLine("****** Hero Stats ******");
+                hero.GetStats();
+                Console.WriteLine($"Coins Remaining: {hero.Coins}");
+                Console.WriteLine();
+                Console.WriteLine("Choose an option:");
+                Console.WriteLine("1. 35 Coins - Boost Original Health (+40)");
+                Console.WriteLine("2. 30 Coins - Boost Defense (+15)");
+                Console.WriteLine("3. 30 Coins - Boost Strength (+15)");
+                Console.WriteLine("4. Back to Main Menu");
+
+                int boostOption = Int32.Parse(GetUserInput());
+
+                while (boostOption != 1 && boostOption != 2 && boostOption != 3 && boostOption != 4)
+                {
+                    Console.WriteLine("Invalid Option Selected");
+                    BoostStats(hero, 3);
+                    boostOption = Int32.Parse(GetUserInput());
+                }
+
+                if (boostOption == 1)
+                {
+                    BoostHero(hero, "health", 40, 35);
+                }
+                else if (boostOption == 2)
+                {
+                    BoostHero(hero, "defense", 15, 30);
+                }
+                else if (boostOption == 3)
+                {
+                    BoostHero(hero, "strength", 15, 30);
+                }
+                else if (boostOption == 4)
+                {
+                    return;
+                }
+
+                // boost monsters' strengths and defenses
+                CreateMonsters(3);
+            }
+        }
+
         //method to boost Hero Stats and pay for boost with coins
         public static void BoostHero(Hero hero, string stat, int amount, int cost)
         {
@@ -418,15 +552,15 @@ namespace OOP_FinalProject
                             if(globalHero.Coins > 0)
                             {
                                 int coins = globalHero.Coins;
-                                if(coins >= 10 && coins < 20)
+                                if(coins >= 15 && coins < 20)
                                 {
                                     BoostStats(globalHero, 1);                                        
                                 } 
-                                else if (coins >= 20 && coins < 30)
+                                else if (coins >= 25 && coins < 35)
                                 {
                                     BoostStats(globalHero, 2);
                                 } 
-                                else if(coins >= 30 )
+                                else if(coins >= 35 )
                                 {
                                     BoostStats(globalHero, 3);                                        
                                 } else
@@ -469,140 +603,7 @@ namespace OOP_FinalProject
             }
         }
 
-        // method to boost hero's stats once they've accumulated enough coins
-        public static void BoostStats(Hero hero, int level)
-        {
-            if (level == 1)
-            {
-                Console.WriteLine("Congratulations! You've earned enough coins for a Level 1 Boost.");
-                Console.WriteLine();
-                Console.WriteLine("****** Hero Stats ******");
-                hero.GetStats();
-                Console.WriteLine($"Coins Remaining: {hero.Coins}");
-                Console.WriteLine();
-                Console.WriteLine("Choose an option:");
-                Console.WriteLine("1. 20 Coins - Boost Original Health (+25)");
-                Console.WriteLine("2. 15 Coins - Boost Defense (+5)");
-                Console.WriteLine("3. 15 Coins - Boost Strength (+5)");
-                Console.WriteLine("4. Back to Main Menu");
-
-                int boostOption = Int32.Parse(GetUserInput());
-
-                while (boostOption != 1 && boostOption != 2 && boostOption != 3 && boostOption != 4)
-                {
-                    Console.WriteLine("Invalid Option Selected");
-                    BoostStats(hero, 1);
-                    boostOption = Int32.Parse(GetUserInput());
-                }
-
-                if (boostOption == 1)
-                {
-                    BoostHero(hero, "health", 25, 20);
-                }
-                else if (boostOption == 2)
-                {
-                    BoostHero(hero, "defense", 5, 15);
-                }
-                else if (boostOption == 3)
-                {
-                    BoostHero(hero, "strength", 5, 15);
-                }
-                else if (boostOption == 4)
-                {
-                    return;
-                }
-
-                // boost monsters' strengths and defenses
-                CreateMonsters(1);
-            }
-            else if (level == 2)
-            {
-                Console.WriteLine("Congratulations! You've earned enough coins for a Level 2 Boost.");
-                Console.WriteLine();
-                Console.WriteLine("****** Hero Stats ******");
-                hero.GetStats();
-                Console.WriteLine($"Coins Remaining: {hero.Coins}");
-                Console.WriteLine();
-                Console.WriteLine("Choose an option:");
-                Console.WriteLine("1. 25 Coins - Boost Original Health (+30)");
-                Console.WriteLine("2. 20 Coins - Boost Defense (+10)");
-                Console.WriteLine("3. 20 Coins - Boost Strength (+10)");
-                Console.WriteLine("4. Back to Main Menu");
-
-                int boostOption = Int32.Parse(GetUserInput());
-
-                while (boostOption != 1 && boostOption != 2 && boostOption != 3 && boostOption != 4)
-                {
-                    Console.WriteLine("Invalid Option Selected");
-                    BoostStats(hero, 2);
-                    boostOption = Int32.Parse(GetUserInput());
-                }
-
-                if (boostOption == 1)
-                {
-                    BoostHero(hero, "health", 30, 25);
-                }
-                else if (boostOption == 2)
-                {
-                    BoostHero(hero, "defense", 10, 20);
-                }
-                else if (boostOption == 3)
-                {
-                    BoostHero(hero, "strength", 10, 20);
-                }
-                else if (boostOption == 4)
-                {
-                    return;
-                }
-
-                // boost monsters' strengths and defenses
-                CreateMonsters(2);
-            }
-            else if (level == 3)
-            {
-                Console.WriteLine("Congratulations! You've earned enough coins for a Level 3 Boost.");
-                Console.WriteLine();
-                Console.WriteLine("****** Hero Stats ******");
-                hero.GetStats();
-                Console.WriteLine($"Coins Remaining: {hero.Coins}");
-                Console.WriteLine();
-                Console.WriteLine("Choose an option:");
-                Console.WriteLine("1. 30 Coins - Boost Original Health (+40)");
-                Console.WriteLine("2. 25 Coins - Boost Defense (+15)");
-                Console.WriteLine("3. 25 Coins - Boost Strength (+15)");
-                Console.WriteLine("4. Back to Main Menu");
-
-                int boostOption = Int32.Parse(GetUserInput());
-
-                while (boostOption != 1 && boostOption != 2 && boostOption != 3 && boostOption != 4)
-                {
-                    Console.WriteLine("Invalid Option Selected");
-                    BoostStats(hero, 3);
-                    boostOption = Int32.Parse(GetUserInput());
-                }
-
-                if (boostOption == 1)
-                {
-                    BoostHero(hero, "health", 40, 30);
-                }
-                else if (boostOption == 2)
-                {
-                    BoostHero(hero, "defense", 15, 25);
-                }
-                else if (boostOption == 3)
-                {
-                    BoostHero(hero, "strength", 15, 25);
-                }
-                else if (boostOption == 4)
-                {
-                    return;
-                }
-
-                // boost monsters' strengths and defenses
-                CreateMonsters(3);
-            }
-        }
-
+        
         // toss coin to randomly allow Hero to begin fight or Monster to begin fight
         public static void CoinToss(Hero hero)
         {
