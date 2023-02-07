@@ -29,9 +29,9 @@ namespace OOP_FinalProject
         {
             Random rand = new Random();
 
-            //generate strength and defense values between 1 - 10
-            int defense = rand.Next(1, 11);
-            int strength = rand.Next(1, 11);
+            //generate strength and defense values between 5 - 10
+            int defense = rand.Next(5, 11);
+            int strength = rand.Next(5, 11);
 
             Hero newHero = new Hero(_heroIdCounter, name, defense, strength);
             Heroes.Add(newHero);
@@ -97,27 +97,27 @@ namespace OOP_FinalProject
             {
                 if(level == 0)
                 {
-                    //generate strength and defense values between 1 - 13
-                    defense = rand.Next(1, 14);
-                    strength = rand.Next(1, 14);
+                    //generate strength and defense values between 1 - 15
+                    defense = rand.Next(1, 16);
+                    strength = rand.Next(1, 16);
                 } 
                 else if (level == 1)
                 {
-                    //generate strength and defense values between 5 - 16
-                    defense = rand.Next(5, 17);
-                    strength = rand.Next(5, 17);
+                    //generate strength and defense values between 5 - 25
+                    defense = rand.Next(5, 26);
+                    strength = rand.Next(5, 26);
                 } 
                 else if (level == 2)
                 {
-                    //generate strength and defense values between 5 - 20
-                    defense = rand.Next(5, 21);
-                    strength = rand.Next(5, 21);
+                    //generate strength and defense values between 10 - 25
+                    defense = rand.Next(10, 36);
+                    strength = rand.Next(10, 36);
                 } 
                 else if (level == 3)
                 {
-                    //generate strength and defense values between 7 - 25
-                    defense = rand.Next(7, 26);
-                    strength = rand.Next(7, 26);
+                    //generate strength and defense values between 15 - 45
+                    defense = rand.Next(15, 46);
+                    strength = rand.Next(15, 46);
                 }                
 
                 Monster randomMonster = new Monster(_monsterIdCounter, $"Monster {i + 1}", defense, strength);
@@ -337,9 +337,9 @@ namespace OOP_FinalProject
                 Console.WriteLine($"Coins Remaining: {hero.Coins}");
                 Console.WriteLine();
                 Console.WriteLine("Choose an option:");
-                Console.WriteLine("1. 15 Coins - Boost Original Health (+25)");
-                Console.WriteLine("2. 10 Coins - Boost Defense (+5)");
-                Console.WriteLine("3. 10 Coins - Boost Strength (+5)");
+                Console.WriteLine("1. 10 Coins - Boost Original Health (+10)");
+                Console.WriteLine("2. 7 Coins - Boost Defense (+3)");
+                Console.WriteLine("3. 15 Coins - Boost Strength (+5)");
                 Console.WriteLine("4. Back to Main Menu");
 
                 int boostOption = Int32.Parse(GetUserInput());
@@ -353,15 +353,15 @@ namespace OOP_FinalProject
 
                 if (boostOption == 1)
                 {
-                    BoostHero(hero, "health", 25, 15);
+                    BoostHero(hero, "health", 10, 10);
                 }
                 else if (boostOption == 2)
                 {
-                    BoostHero(hero, "defense", 5, 10);
+                    BoostHero(hero, "defense", 3, 7);
                 }
                 else if (boostOption == 3)
                 {
-                    BoostHero(hero, "strength", 5, 10);
+                    BoostHero(hero, "strength", 5, 15);
                 }
                 else if (boostOption == 4)
                 {
@@ -380,9 +380,9 @@ namespace OOP_FinalProject
                 Console.WriteLine($"Coins Remaining: {hero.Coins}");
                 Console.WriteLine();
                 Console.WriteLine("Choose an option:");
-                Console.WriteLine("1. 25 Coins - Boost Original Health (+30)");
-                Console.WriteLine("2. 20 Coins - Boost Defense (+10)");
-                Console.WriteLine("3. 20 Coins - Boost Strength (+10)");
+                Console.WriteLine("1. 15 Coins - Boost Original Health (+15)");
+                Console.WriteLine("2. 10 Coins - Boost Defense (+5)");
+                Console.WriteLine("3. 20 Coins - Boost Strength (+8)");
                 Console.WriteLine("4. Back to Main Menu");
 
                 int boostOption = Int32.Parse(GetUserInput());
@@ -396,15 +396,15 @@ namespace OOP_FinalProject
 
                 if (boostOption == 1)
                 {
-                    BoostHero(hero, "health", 30, 25);
+                    BoostHero(hero, "health", 15, 15);
                 }
                 else if (boostOption == 2)
                 {
-                    BoostHero(hero, "defense", 10, 20);
+                    BoostHero(hero, "defense", 5, 10);
                 }
                 else if (boostOption == 3)
                 {
-                    BoostHero(hero, "strength", 10, 20);
+                    BoostHero(hero, "strength", 8, 20);
                 }
                 else if (boostOption == 4)
                 {
@@ -423,9 +423,9 @@ namespace OOP_FinalProject
                 Console.WriteLine($"Coins Remaining: {hero.Coins}");
                 Console.WriteLine();
                 Console.WriteLine("Choose an option:");
-                Console.WriteLine("1. 35 Coins - Boost Original Health (+40)");
-                Console.WriteLine("2. 30 Coins - Boost Defense (+15)");
-                Console.WriteLine("3. 30 Coins - Boost Strength (+15)");
+                Console.WriteLine("1. 20 Coins - Boost Original Health (+20)");
+                Console.WriteLine("2. 13 Coins - Boost Defense (+7)");
+                Console.WriteLine("3. 25 Coins - Boost Strength (+11)");
                 Console.WriteLine("4. Back to Main Menu");
 
                 int boostOption = Int32.Parse(GetUserInput());
@@ -439,15 +439,15 @@ namespace OOP_FinalProject
 
                 if (boostOption == 1)
                 {
-                    BoostHero(hero, "health", 40, 35);
+                    BoostHero(hero, "health", 20, 20);
                 }
                 else if (boostOption == 2)
                 {
-                    BoostHero(hero, "defense", 15, 30);
+                    BoostHero(hero, "defense", 7, 13);
                 }
                 else if (boostOption == 3)
                 {
-                    BoostHero(hero, "strength", 15, 30);
+                    BoostHero(hero, "strength", 11, 25);
                 }
                 else if (boostOption == 4)
                 {
@@ -548,33 +548,40 @@ namespace OOP_FinalProject
                         break;
                     case "4":
                         BoostStatsHeader();
-                        if (globalHero != null)
+                        try
                         {
-                            if(globalHero.Coins > 0)
+                            if (globalHero != null)
                             {
-                                int coins = globalHero.Coins;
-                                if(coins >= 15 && coins < 20)
+                                if(globalHero.Coins > 0)
                                 {
-                                    BoostStats(globalHero, 1);                                        
-                                } 
-                                else if (coins >= 25 && coins < 35)
-                                {
-                                    BoostStats(globalHero, 2);
-                                } 
-                                else if(coins >= 35 )
-                                {
-                                    BoostStats(globalHero, 3);                                        
+                                    int coins = globalHero.Coins;
+                                    if(coins >= 15 && coins < 20)
+                                    {
+                                        BoostStats(globalHero, 1);                                        
+                                    } 
+                                    else if (coins >= 25 && coins < 35)
+                                    {
+                                        BoostStats(globalHero, 2);
+                                    } 
+                                    else if(coins >= 35 )
+                                    {
+                                        BoostStats(globalHero, 3);                                        
+                                    } else
+                                    {
+                                        Console.WriteLine($"\nSorry {globalHero.HeroName}! :-( You do not have enough coins to boost your stats.");
+                                    }
                                 } else
                                 {
                                     Console.WriteLine($"\nSorry {globalHero.HeroName}! :-( You do not have enough coins to boost your stats.");
                                 }
                             } else
                             {
-                                Console.WriteLine($"\nSorry {globalHero.HeroName}! :-( You do not have enough coins to boost your stats.");
+                                Console.WriteLine("Hero Player not Found.");
                             }
-                        } else
+                        }
+                        catch(Exception ex)
                         {
-                            Console.WriteLine("Hero Player not Found.");
+                            Console.WriteLine(ex.Message);
                         }
                         break;
                     case "5":
