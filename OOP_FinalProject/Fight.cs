@@ -41,7 +41,7 @@ namespace OOP_FinalProject
         /***
          * (Discussed and Approved by Instructor)
          * 
-         * Damage Equation:
+         * Damage Equation Refactor:
          * 
          * Original equation was improved upon to handle fluctuation in damage value as fight proceeded. 
          * After some research, solution was found to account for possible negative values and values that exceed original health
