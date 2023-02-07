@@ -322,6 +322,7 @@ namespace OOP_FinalProject
             Console.WriteLine($"Total Fights: {totalFights}");
             Console.WriteLine($"Fights Won: {fightsWon}");
             Console.WriteLine($"Fights Lost: {fightsLost}");
+            Console.WriteLine($"Coins Remaining: {globalHero.Coins}");
         }
 
         // method to boost hero's stats once they've accumulated enough coins
