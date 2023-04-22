@@ -7,7 +7,13 @@
 
 ### Description
 
-Console Game built using Asp.NET6.0 Framework 
+Console Game built using .NET 6.0 Framework 
+
+Application was designed with the follwowing OOP Principles:
+- Classes with encapsulated fields or collections
+- Input validation with appropritate error messages
+- Static organizer class handling how data is passed between lower level classes
+    - Lower-level classes manage storing, validating, and passing data back to the organizing class
 
 ![Hero vs Monsters](./OOP_FinalProject/screenshots/herovsmonsters.png?raw=true "Hero vs Monsters")
 
