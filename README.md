@@ -9,7 +9,7 @@
 
 Console Game built using Asp.NET6.0 Framework 
 
-![Hero vs Monsters](./screenshots/herovsmonsters.png?raw=true "Hero vs Monsters")
+![Hero vs Monsters](./OOP_FinalProject/screenshots/herovsmonsters.png?raw=true "Hero vs Monsters")
 
 ### How To Play
 
