@@ -39,7 +39,6 @@ namespace OOP_FinalProject
         }
 
         /***
-         * (Discussed and Approved by Instructor)
          * 
          * Damage Equation Refactor:
          * 
