@@ -7,7 +7,7 @@
 
 ### Description
 
-Console Game built using [DotNet 6.0 Framework](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-6)
+Console Game built using C# language and [DotNet 6.0 Framework](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-6)
 
 Application was designed with the follwowing OOP Principles:
 - Classes with encapsulated fields or collections
