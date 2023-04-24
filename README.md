@@ -3,7 +3,7 @@
 ### Table of contents
 - [Description](#description)
 - [How to Play](#how-to-play)
-- [Install Instructions](#install-instructions)
+- [Launch Application](#launch-application)
 
 ### Description
 
@@ -27,9 +27,11 @@ Application was designed with the follwowing OOP Principles:
 4. ```Boost Stats``` (Following each win, the hero will gain coins that they can use to purchase boosts to their health, strength and defense values)
 5. ```Reset Game``` (Resets game values)
 
-### Install Instructions
+### Launch Application
 
-- Clone repository in Visual Studio
-- Launch application console
+- Clone repository to your local device
+- Navigate to the executable file in the publish folder of the project
+    - ``` HeroVsMonsters/OOP_FinalProject/bin/Release/net6.0/publish/OOP_FinalProject.exe ```
+- Double-click executable file to launch game
 
 ### 😄😄 HAVE FUN!! 😄😄 ###
