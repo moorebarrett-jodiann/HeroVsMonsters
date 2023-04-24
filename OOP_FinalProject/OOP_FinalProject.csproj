@@ -8,7 +8,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="bin\Debug\net6.0\OOP_FinalProject.deps.json" />
+    <Content Include="bin\Debug\net6.0\OOP_FinalProject.runtimeconfig.json" />
+    <Content Include="bin\Release\net6.0\OOP_FinalProject.deps.json" />
+    <Content Include="bin\Release\net6.0\OOP_FinalProject.runtimeconfig.json" />
+    <Content Include="bin\Release\net6.0\publish\OOP_FinalProject.deps.json" />
+    <Content Include="bin\Release\net6.0\publish\OOP_FinalProject.runtimeconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="screenshots\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\net6.0\OOP_FinalProject.dll" />
+    <None Include="bin\Debug\net6.0\OOP_FinalProject.exe" />
+    <None Include="bin\Debug\net6.0\OOP_FinalProject.pdb" />
+    <None Include="bin\Release\net6.0\OOP_FinalProject.dll" />
+    <None Include="bin\Release\net6.0\OOP_FinalProject.exe" />
+    <None Include="bin\Release\net6.0\OOP_FinalProject.pdb" />
+    <None Include="bin\Release\net6.0\publish\OOP_FinalProject.dll" />
+    <None Include="bin\Release\net6.0\publish\OOP_FinalProject.exe" />
+    <None Include="bin\Release\net6.0\publish\OOP_FinalProject.pdb" />
   </ItemGroup>
 
 </Project>
